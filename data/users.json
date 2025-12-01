@@ -1,0 +1,32 @@
+{
+  "test": {
+    "user": "test", 
+    "pass": "oaiwefoiawj", 
+    "expense": {
+      "currency": "$",
+      "description": "Test account",
+      "balance": 1275,
+      "transactions": [
+        {
+          "id": "1",
+          "date": "2020-10-01",
+          "object": "Pocket money",
+          "price": 50
+        }
+      ]
+    },
+    "diary": {
+      "description": "Test's diary",
+      "entries": [
+        {
+          "id": "oafo", 
+          "title": "Yes", 
+          "img": "oijaeowij", 
+          "dateCreated": "oaoeiafoei", 
+          "dateUpdated": "oaoieaoi", 
+          "story": "story"
+        }
+      ]
+    }
+  }
+}
