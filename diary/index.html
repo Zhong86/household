@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diary</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div style="position:absolute;width: 90%; height: 100%;background-color: green;
+    left:50%;transform:translateX(-50%);border-radius:8px;">
+    <h1>Name's Diary</h1>
+    <div id="page">Loading...</div>
+    <!-- ------------------------------MAIN----------------------------------- -->
+    <template id="main">
+      <div class="container">
+        <button class="createEntry" type="submit">Create Entry</button>
+      </div>   
+
+      <div class="split">
+        <div style="width:30%;">
+          <label for="sort" style="color:white;">Sort</label> <br>
+          <select name="sort" id="sort"> 
+            <option value="title">Title</option>
+            <option value="date">Date Created</option>
+          </select>
+        </div>
+        <div style="width:35%"></div>
+        <div class="btn-group">
+          <button class="toggleStyle" type="button">List</button>
+          <button class="toggleStyle" type="buttton">Grid</button>
+        </div>
+      </div>
+      
+      <div id="entries"></div>
+
+      <template id="list">
+        <table>
+          <tbody>
+            <tr>
+              
+            </tr>
+          </tbody>
+        </table>
+      </template>
+
+      <template id="grid">
+      </template>
+    </template>
+
+    <!-- ---------------------------ENTRIES------------------------------------- -->
+    <template id="entry">
+
+    </template>
+  </div>
+</body>
+<script src="script.js"></script>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Household Web</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>HOUSEHOLD</header>
+  <div id="app">Loading...</div>
+  <!-- LOGIN TEMPLATE-->
+  <template id="login">
+    <section>
+      <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm" action="javascript: login()">
+          <div class="formGroup">
+            <label for="username">Username</label> <br>
+            <input id="username" class="formField" type="text" placeholder="Enter your username" required> <br>
+          </div>
+          <div class="formGroup">
+            <label for="pass">Password</label> <br>
+            <input id="pass" class="formField" type="text" placeholder="Enter your password" required> <br>
+          </div>
+          <div id="loginError" role="alert"></div> <br>
+          <button type="submit" class="acc">Login</button>
+        </form>
+      </div>
+      <div class="container">
+        <h2>Register</h2>
+        <form id="regisForm" >
+          <div class="formGroup">
+          <label for="username">Username</label> <br>
+          <input id="username" class="formField" type="text" placeholder="Enter new username" name="user" required
+            title="Username can only include letters, numbers, and underscores" 
+            pattern="[a-zA-Z0-9_]+"> <br>
+          </div>
+          <div class="formGroup"
+          <label for="pass">Password</label> <br>
+          <input id="pass" class="formField" type="text" minLength="8" pattern="[a-zA-Z0-9!@#$%^&*_]+" name="pass" required title="Password can only be letters, numbers" 
+            placeholder="Enter new password"> <br>
+          </div>
+          <div id="regisError" role="alert"></div> <br>
+          <button type="submit" class="acc">Register</button>
+        </form>
+      </div>
+    </section>
+  </template>
+  <!-- HOME PAGE -->
+  <template id="home">
+    <h2 id="title">Name's Home</h2>
+    <div class="apps">
+       
+    </div>
+  </template>
+</body>
+<script type="module" src="script.js"></script>
+<script type="module" src="login.js"></script>
+<script type="module" src="home.js"></script>
+<script type="module" src="account.js"></script>
+</html>

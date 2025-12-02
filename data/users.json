@@ -1,7 +1,7 @@
 {
   "test": {
-    "user": "test", 
-    "pass": "oaiwefoiawj", 
+    "user": "test",
+    "pass": "oaiwefoiawj",
     "expense": {
       "currency": "$",
       "description": "Test account",
@@ -19,14 +19,44 @@
       "description": "Test's diary",
       "entries": [
         {
-          "id": "oafo", 
-          "title": "Yes", 
-          "img": "oijaeowij", 
-          "dateCreated": "oaoeiafoei", 
-          "dateUpdated": "oaoieaoi", 
+          "id": "oafo",
+          "title": "Yes",
+          "img": "oijaeowij",
+          "dateCreated": "oaoeiafoei",
+          "dateUpdated": "oaoieaoi",
           "story": "story"
         }
       ]
     }
+  },
+  "awefawe": {
+    "user": "awefawe"
+  },
+  "feawfaew": {
+    "user": "feawfaew"
+  },
+  "feafea": {
+    "user": "feafea"
+  },
+  "fawefawe": {
+    "user": "fawefawe"
+  },
+  "fawefoija": {
+    "user": "fawefoija"
+  },
+  "fawefa": {
+    "user": "fawefa"
+  },
+  "fawef": {
+    "user": "fawef",
+    "pass": ""
+  },
+  "fawefaw": {
+    "user": "fawefaw",
+    "pass": "$2b$12$5zjNNgSZzA.pKhm1pbo/begZFb7R9SXv.QmExumo8XTLlX2Xozm0y"
+  },
+  "hello": {
+    "user": "hello",
+    "pass": "$2b$12$G75avV.6c/n4u/iK58cY9uKiQ7p6UnkVk.AjszPWLJ8rp/96RtJw."
   }
 }
