@@ -1,5 +1,3 @@
-@import "styles-bank.css";
-
 :root {
   --pColor: grey; 
   --sColor: white; 
@@ -20,7 +18,7 @@ header {
 h2 {
   text-align:center;
   margin-bottom:4px;
-  color: var(--sColor); 
+  color: black; 
 }
 
 
@@ -59,45 +57,4 @@ button.acc {
   transform: translateX(-50%);
 }
 
-/** ====================== HOME ====================**/
-.profile {
-  position:absolute; 
-  top: 10%; 
-  right: 10%; 
-}
 
-button.profileBtn {
-  width: 75px; 
-  height: 75px; 
-  border-radius: 50%; 
-  border: 2px solid var(--sColor); 
-  background-color: green; 
-}
-
-.apps {
-  position: absolute; 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: center; 
-  left: 50%; 
-  transform: translateX(-50%);
-  margin-top: 5%; 
-}
-
-.appListChildren {
-  margin-bottom: 5%;
-
-}
-
-button.appChildrenBtn {
-  width: 400px;
-  height: 75px; 
-  border-radius: 8px;
-  
-  font-size: 32px; 
-  font-weight: bold; 
-  font-style: italic;
-  text-align: left; 
-
-  padding-left: 10%; 
-}

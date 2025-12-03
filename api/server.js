@@ -4,7 +4,7 @@ const fs = require('fs'); //filesystem
 const bodyParser = require('body-parser'); 
 
 //import from local
-const { createAcc } = require('./functions/account-server.js');
+const { createAcc, getAcc } = require('./functions/account-server.js');
 const { createEntry, deleteEntry } = require('./functions/diary-entry.js');
 
 const port = process.env.PORT || 5000; 
@@ -58,6 +58,7 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+ 
   next();
 });
 
@@ -79,8 +80,8 @@ router.post('/accounts', async (req,res) => {
 }); 
 
 //GET
-router.get('/accounts/:user', (req, res) => {
-  const acc = getAcc(db, req, res); 
+router.post('/accounts/:user', async (req, res) => {
+  const acc = await getAcc(db, req, res); 
   
   return res.json(acc);
 });

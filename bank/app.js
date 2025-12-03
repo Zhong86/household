@@ -1,9 +1,4 @@
-//VARIABLES
-let state = Object.freeze({
-  account: null
-}); //checked if logged in 
-
-const storageKey = 'savedAccount'; 
+import { state } from '../script.js';
 
 function init() {
   const savedAccount = localStorage.getItem(storageKey); 
@@ -29,7 +24,6 @@ function updateState(property, newData) {
 
 //NAVIGATION
 const routes = {
-  '/login': { templateId: 'login' }, 
   '/dashboard': { templateId: 'dashboard', init: initDashboard }
 };
 

@@ -7,8 +7,6 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div style="position:absolute;width: 90%; height: 100%;background-color: green;
-    left:50%;transform:translateX(-50%);border-radius:8px;">
     <h1>Name's Diary</h1>
     <div id="page">Loading...</div>
     <!-- ------------------------------MAIN----------------------------------- -->
@@ -33,17 +31,11 @@
       </div>
       
       <div id="entries"></div>
-
       <template id="list">
-        <table>
-          <tbody>
-            <tr>
-              
-            </tr>
-          </tbody>
-        </table>
+        <div class="diary-list">
+          
+        </div>
       </template>
-
       <template id="grid">
       </template>
     </template>
@@ -52,7 +44,6 @@
     <template id="entry">
 
     </template>
-  </div>
 </body>
 <script src="script.js"></script>
 </html>

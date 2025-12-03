@@ -29,10 +29,13 @@ async function getAcc(db, req, res) {
   if(!user)
     return res.status(404).json({error: 'User does not exist'}); 
   
-  const hashedPass = db[req.body.user].pass;
+  const hashedPass = user.pass;
   const correctPass = await bcrypt.compare(req.body.pass, hashedPass); 
   if (!correctPass) 
-    return alert('Password was wrong');  
+    return res.status(400).json({
+      ok: false, 
+      error: 'Password is wrong'
+    });
   
   return user;
 }

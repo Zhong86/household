@@ -27,38 +27,32 @@ export function updateState(property, newData) {
 }
 
 //Navigation
-const routeSPA = {
+const routes = {
   '/login': { templateId: 'login' }, 
-  '/home': { templateId: 'home', init: homePage }
+  '/home': { templateId: 'home', init: homePage },
+  '/bank': { templateId: 'dashboard' }
 };
 
-const routeMPA = [
-  '/bank',
-  '/diary'
-];
-const routes = Object.keys(routeSPA).concat(routeMPA); 
 
-function updateRoute() {
+
+export function updateRoute() {
   const path = window.location.pathname; 
-  
-  if (!routes.includes(path)) {
+  const route = routes[path];
+  if (!route) {
     console.log(`${path} not found`);
     return navigate('/home'); 
   }
-  
-  const route = routeSPA[path];
-  if(route) {
-    const template = document.getElementById(route.templateId); 
-    const view = template.content.cloneNode(true); 
-    const app = document.getElementById('app'); 
-    app.innerHTML = ''; 
-    app.appendChild(view); 
+  const template = document.getElementById(route.templateId); 
+  if(!template) {
+    return navigate('/home'); 
+  }
+  const view = template.content.cloneNode(true); 
+  const app = document.getElementById('app'); 
+  app.innerHTML = ''; 
+  app.appendChild(view); 
 
-    if (typeof route.init ==='function') {
-      route.init(); 
-    }
-  } else {
-    navigate(path); 
+  if (typeof route.init ==='function') {
+    route.init(); 
   }
 }
 

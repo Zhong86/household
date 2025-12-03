@@ -1,6 +1,7 @@
 import { logout } from './account.js';
 import { state, navigate } from './script.js';
 
+
 const apps = {
   Expense: '/bank', 
   Diary: '/diary'
@@ -38,7 +39,27 @@ export function homePage() {
   }
 }
 
-function onClick(path) {
+async function onClick(path) {
   console.log(`Changing path to: ${path}`); 
-  navigate(path); 
+  const result = await loadHTML(`${path}/index.html`); 
+  
+  if(result !== 0) {
+    console.log('Load HTML error'); 
+  }
+  
+//  window.history.pushState({}, '', `/${path}`); 
+  window.history.pushState({}, '', 'http://192.168.1.11:3000/bank');
+  navigate('/bank'); 
+}
+
+async function loadHTML(filePath) {
+  try {
+    const response = await fetch(filePath);
+    const html = await response.text();
+    const app = document.getElementById('app')
+    app.innerHTML = html; 
+    return 0; 
+  } catch (error) {
+    console.error('Load page failed: ', error); 
+  }
 }

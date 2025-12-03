@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
   <title>Household Web</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -38,7 +39,7 @@
             title="Username can only include letters, numbers, and underscores" 
             pattern="[a-zA-Z0-9_]+"> <br>
           </div>
-          <div class="formGroup"
+          <div class="formGroup">
           <label for="pass">Password</label> <br>
           <input id="pass" class="formField" type="text" minLength="8" pattern="[a-zA-Z0-9!@#$%^&*_]+" name="pass" required title="Password can only be letters, numbers" 
             placeholder="Enter new password"> <br>
@@ -63,4 +64,5 @@
 <script type="module" src="script.js" defer></script>
 <script type="module" src="home.js" defer></script>
 <script type="module" src="account.js" defer></script>
+<script type="module" src="bank/script-bank.js" defer></script>
 </html>
