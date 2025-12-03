@@ -1,9 +1,47 @@
-import { serverPort } from './script.js';
-const registerForm = document.getElementById('regisForm');
+import { serverPort, updateState, navigate } from './script.js';
 
+let loginForm, registerForm; 
+
+// ============================ LOGIN ==============================
+async function login() {
+  const loginBtn = loginForm.querySelector('button[type="submit"]');
+  try {
+    loginBtn.disabled = true; 
+    loginBtn.textContent = "Loggin in..."; 
+
+    const form = new FormData(loginForm); 
+    const data = Object.fromEntries(form); 
+    const json = JSON.stringify(data); 
+
+    const result = getAcc(json);
+    if (result.error) {
+      const err = document.getElementById('loginError'); 
+      err.textContent = data.error;
+      return -1; 
+    }
+
+    loginForm.reset(); 
+
+    updateState('account', result); 
+    navigate('/home'); 
+    return result; 
+  } catch (error) {
+    alert('Login failed. Try again');  
+  }finally {
+    loginBtn.disabled = false; 
+    loginBtn.textContent = "Login"
+  }
+}
+
+export function logout() {
+  updateState('account', null); 
+  navigate ('/login'); 
+}
+
+// ========================== REGISTRATION ==============================
 async function regisForm() {
   const createBtn = registerForm.querySelector('button[type="submit"]');
-  
+
   try {
     createBtn.disabled = true;
     createBtn.textContent = 'Creating account...';
@@ -12,8 +50,6 @@ async function regisForm() {
     const formData = new FormData(registerForm);
     const data = Object.fromEntries(formData);
     const jsonData = JSON.stringify(data); 
-    
-    console.log(jsonData);
 
     const result = await createAcc(jsonData); 
 
@@ -22,10 +58,12 @@ async function regisForm() {
       err.textContent = result.error;
       return -1; 
     }
-    
-    alert(`Welcome, ${result.user}. Your account has been created`); 
 
     registerForm.reset(); 
+    alert(`Welcome, ${result.user}. Your account has been created`); 
+
+    updateState('account', result); 
+    navigate('/home'); 
 
     return result; 
   } catch (error) {
@@ -36,6 +74,7 @@ async function regisForm() {
   }
 }
 
+// ================================ CREATE ACC =====================================
 async function createAcc(acc) {
   try {
     const result = await fetch(serverPort + '/accounts', {
@@ -50,6 +89,7 @@ async function createAcc(acc) {
     if(!result.ok) {
       throw new Error(`HTTP error. Status: ${result.status}`); 
     }
+
     return await result.json(); 
   } catch (error) {
     console.error('Account creation failed: ', error);
@@ -57,7 +97,32 @@ async function createAcc(acc) {
   }
 };
 
-registerForm.addEventListener('submit', (e) => {
-  e.preventDefault(); 
-  regisForm();
-});
+// ================================= GET ACC =================================
+async function getAcc(user) {
+  try {
+    const result = await fetch(serverPort + '/accounts' + encodeURIComponent(user.user)); 
+    return await result.json(); 
+  } catch (error) {
+    return { error: error.message || 'Unknown error' }; 
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loginForm = document.getElementById('loginForm'); 
+  registerForm = document.getElementById('regisForm');
+  
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault(); 
+      login(); 
+    }); 
+  }
+
+  if (registerForm) {
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault(); 
+      regisForm();
+    });
+  }
+}); 
+

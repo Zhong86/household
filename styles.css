@@ -18,19 +18,22 @@ header {
 h2 {
   text-align:center;
   margin-bottom:4px;
+  color: var(--sColor); 
 }
 
+
+/** ===================== LOGIN ====================**/
 .container {
   position: relative;
   width: 35%;
-  height: 35vh;
+  height: 35%;
   background-color: var(--sColor); 
   padding: 8px; 
   padding-top:4px;
   border: 2px solid black; 
   border-radius: 12px; 
   margin:auto;
-  margin-bottom:12px;
+  margin-bottom: 5%;
 }
 
 .formGroup {
@@ -52,4 +55,47 @@ button.acc {
   bottom:0;
   left: 50%; 
   transform: translateX(-50%);
+}
+
+/** ====================== HOME ====================**/
+.profile {
+  position:absolute; 
+  top: 10%; 
+  right: 10%; 
+}
+
+button.profileBtn {
+  width: 75px; 
+  height: 75px; 
+  border-radius: 50%; 
+  border: 2px solid var(--sColor); 
+  background-color: green; 
+}
+
+.apps {
+  position: absolute; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  left: 50%; 
+  transform: translateX(-50%);
+  margin-top: 5%; 
+}
+
+.appListChildren {
+  margin-bottom: 5%;
+
+}
+
+button.appChildrenBtn {
+  width: 400px;
+  height: 75px; 
+  border-radius: 8px;
+  
+  font-size: 32px; 
+  font-weight: bold; 
+  font-style: italic;
+  text-align: left; 
+
+  padding-left: 10%; 
 }

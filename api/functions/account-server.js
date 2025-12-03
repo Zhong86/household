@@ -24,6 +24,21 @@ async function createAcc(db, req, res) {
   return acc;
 }
 
+async function getAcc(db, req, res) {
+  const user = db[req.body.user];
+  if(!user)
+    return res.status(404).json({error: 'User does not exist'}); 
+  
+  const hashedPass = db[req.body.user].pass;
+  const correctPass = await bcrypt.compare(req.body.pass, hashedPass); 
+  if (!correctPass) 
+    return alert('Password was wrong');  
+  
+  return user;
+}
+
+
 module.exports = {
-  createAcc
+  createAcc, 
+  getAcc
 }

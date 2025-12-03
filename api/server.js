@@ -4,7 +4,7 @@ const fs = require('fs'); //filesystem
 const bodyParser = require('body-parser'); 
 
 //import from local
-const { createAcc } = require('./functions/account.js');
+const { createAcc } = require('./functions/account-server.js');
 const { createEntry, deleteEntry } = require('./functions/diary-entry.js');
 
 const port = process.env.PORT || 5000; 
@@ -78,13 +78,10 @@ router.post('/accounts', async (req,res) => {
   return res.status(201).json(acc); 
 }); 
 
+//GET
 router.get('/accounts/:user', (req, res) => {
-  const acc = db[req.params.user];
-
-  if (!acc) {
-    return res.status(404).json({ error: 'User does not exist' });
-  }
-
+  const acc = getAcc(db, req, res); 
+  
   return res.json(acc);
 });
 

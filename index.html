@@ -14,14 +14,16 @@
     <section>
       <div class="container">
         <h2>Login</h2>
-        <form id="loginForm" action="javascript: login()">
+        <form id="loginForm" >
           <div class="formGroup">
             <label for="username">Username</label> <br>
-            <input id="username" class="formField" type="text" placeholder="Enter your username" required> <br>
+            <input id="username" class="formField" type="text" name="user"
+                placeholder="Enter your username" required> <br>
           </div>
           <div class="formGroup">
             <label for="pass">Password</label> <br>
-            <input id="pass" class="formField" type="text" placeholder="Enter your password" required> <br>
+            <input id="pass" class="formField" type="text" name="pass"
+                placeholder="Enter your password" required> <br>
           </div>
           <div id="loginError" role="alert"></div> <br>
           <button type="submit" class="acc">Login</button>
@@ -50,13 +52,15 @@
   <!-- HOME PAGE -->
   <template id="home">
     <h2 id="title">Name's Home</h2>
-    <div class="apps">
+    <div class="profile" id="profile">
+      <button type="button" class="profileBtn"></button>
+    </div>
+    <div class="apps" id="apps">
        
     </div>
   </template>
 </body>
-<script type="module" src="script.js"></script>
-<script type="module" src="login.js"></script>
-<script type="module" src="home.js"></script>
-<script type="module" src="account.js"></script>
+<script type="module" src="script.js" defer></script>
+<script type="module" src="home.js" defer></script>
+<script type="module" src="account.js" defer></script>
 </html>
