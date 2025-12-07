@@ -24,14 +24,19 @@ function createEntry(entries, req, res) {
   return entry;
 }
 
+//EDIT
+function editEntry(req, res) {
+  
+}
+
 //DELETE
-function deleteEntry(acc, id) {
+function deleteEntry(acc, id, res) {
   const getIndex = acc.diary.findIndex(
     (entry) => entry.id === id
   );
 
   if (getIndex === -1) {
-    return res.status(404).json({ error: 'Transaction does not exist' }); 
+    return res.status(404).json({ error: 'Diary entry does not exist' }); 
   }
   
   //removes the entry at index getIndex, for 1 element
@@ -39,7 +44,7 @@ function deleteEntry(acc, id) {
   return updatedAcc;
 }
 
-module.exports = {
+export {
   createEntry,
   deleteEntry
 };

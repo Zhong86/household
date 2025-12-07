@@ -35,7 +35,8 @@ function updateState(property, newData) {
 const routes = {
   '/login':  <App form={"login"} /> , 
   '/home': <App form={"home"} />, 
-  '/expense': <App form={"expense"} />
+  '/expense': <App form={"expense"} />,  
+  '/diary': <App form={"diary"} />
 };
 
 function updateRoute() {
@@ -62,7 +63,7 @@ export {
 }; 
 
 
-// If you want to start measuring performance in your app, pass a function
+// If you want to start measuring performance in yourapp, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

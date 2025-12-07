@@ -37,7 +37,6 @@ const List = () => {
     navigate(page); 
   };
   
-  console.log(Object.entries(pageHash)); 
   return (
     <div className="apps" ref={listRef}>
       {Object.entries(pageHash).map(([page,title]) => (

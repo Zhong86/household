@@ -22,7 +22,6 @@ const Login = () => {
       if (result.error) {
         const err = document.getElementById('loginError'); 
         err.textContent = data.error;
-        return -1; 
       }
 
       loginForm.reset(); 
@@ -148,16 +147,16 @@ async function createAcc(acc) {
 // ================================= GET ACC =================================
 async function getAcc(user) {
   try {
-    const result = await fetch(serverPort + '/accounts/' + encodeURIComponent(user.user), {
+    const response = await fetch(serverPort + '/accounts/' + encodeURIComponent(user.user), {
       method: 'POST', 
       headers: { 'Content-Type': 'application/json' }, 
       body: JSON.stringify(user)
     });
 
-    if(!result.ok) {
-      console.error('Get user error ', result.error); 
+    if(!response.ok) {
+      return console.error('Get user error ', response.error); 
     }
-    return await result.json(); 
+    return await response.json(); 
   } catch (error) {
     return { error: error.message || 'Unknown error' }; 
   }

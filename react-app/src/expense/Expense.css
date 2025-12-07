@@ -1,0 +1,214 @@
+/* Text */
+h1.expense {
+  position: static; 
+  color: var(--secondary-color);
+  margin:auto; 
+  width: 30%; 
+  text-align: center; 
+} 
+
+h2.expense {
+  position: relative; 
+  text-align: center; 
+  top: 0%; 
+}
+
+input.expense {
+  width: 100%;
+}
+
+small.expense {
+  color: #808080;
+}
+
+/* Forms */
+.container-expense {
+  position: static; 
+  width: 500px; 
+  padding: 25px;
+  padding-top: 8px; 
+  background-color: var(--secondary-color);
+  margin:auto; 
+  margin-top: 20px; 
+  margin-bottom: 20px;  
+  border-radius: 25px; 
+}
+
+.form-group-expense {
+  position: relative; 
+  width: 100%;
+  outline-style: solid;
+  outline-color: gray; 
+  outline-width: thin;
+  padding: 4px; 
+  margin:auto; 
+  margin-top:20px; 
+  margin-bottom: 10px; 
+  border-radius: 5px; 
+  text-align: left;
+}
+
+/* DASHBOARD PAGE */
+.balance-expense {
+  color: var(--secondary-color); 
+  font-size: 30px; 
+  font-weight: bold; 
+  text-align: center; 
+  margin-top: 8px; 
+}
+
+.logout {
+  position: absolute; 
+  left: 80%; 
+  width: 70px; 
+  background-color: var(--secondary-color); 
+  padding: 2px 6px 2px 6px; 
+  border-radius: 4px; 
+  text-decoration: none;
+  text-align: center; 
+  margin-top: 8px; 
+}
+
+h2.description-expense {
+  color: var(--secondary-color); 
+  font-size: 18px; 
+  font-weight: bold; 
+  text-align: center; 
+}
+
+table {
+  width: 550px; 
+  margin:auto;
+  margin-top: 20px; 
+  border-collapse: collapse; 
+  background-color: white; 
+}
+
+th, td {
+  text-align: left; 
+  padding: 4px;
+  border: 1px solid; 
+}
+
+tr:nth-of-type(odd) td {
+  background-color: #eeeeee; 
+}
+
+tr:nth-of-type(even) td {
+  background-color: grey; 
+  margin:auto; 
+}
+td.dltCell-expense {
+  text-align: center; 
+  background-color: rgba(0,0,0,0); 
+  
+}
+
+button.transaction-expense {
+  width: 150px;
+  height: 50px; 
+  padding: 4px; 
+  font-size: 16px; 
+  font-weight: bold; 
+} 
+
+button.close-expense {
+  position: relative; 
+  width: 30px; 
+  height: 30px; 
+  background:rgba(0,0,0,0);
+  border: none; 
+  color: black; 
+  text-align: center; 
+  display: inline-block; 
+  border-radius: 50%; 
+  font-size: 20px; 
+  left: 45%;
+  top:10px; 
+  padding: 2px; 
+}
+
+button.close-expense:hover {
+  background-color: grey;
+}
+
+.search-expense{
+  margin-bottom: 16px; 
+  display:flex; 
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  gap:6px; 
+  font-size: 14px; 
+}
+
+.floating-expense {
+  position: -webkit-sticky; 
+  position: sticky; 
+  top: 10px;  
+  width: 150px;
+  z-index: 99; 
+  margin:auto;
+}
+
+/* Create transaction container */
+.createTransaction-expense{
+  position: fixed; 
+  top: 0; left: 0; bottom: 0; right: 0; 
+  margin:auto; 
+  width: 450px; 
+  height: 500px; 
+
+  background-color: white;
+  border-radius: 16px; 
+  border: 5px solid grey;    
+  
+  text-align:center;  
+  color: black; 
+  font-weight: bold; 
+  font-size:25px; 
+
+  z-index:100; 
+}
+
+.createInner-expense{
+  width: 90%; 
+  height: 80%; 
+  margin:auto; 
+  margin-top: 20px;  
+
+  border-radius: 8px; 
+}
+
+form.newTransaction-expense{
+  width: 90%; 
+  height: 100%;
+  padding-top: 1px; 
+  margin:auto; 
+  color: grey; 
+  font-size: 16px; 
+}
+
+button.create-expense {
+  width: 100px; 
+  height: 30px;
+}
+
+/**********************************NEW USER ****************************************/
+.newUserContainer-expense {
+  width: 40%; 
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  background-color: white; 
+  border: 1px solid black; 
+  border-radius: 8px; 
+  padding: 8px; 
+  margin:auto; 
+}
+
+form.newUserForm-expense {
+  width: 70%; 
+  margin: auto; 
+  margin-bottom: 24px; 
+}

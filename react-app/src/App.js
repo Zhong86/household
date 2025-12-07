@@ -1,7 +1,9 @@
 import './App.css';
+import { state } from './index.js';
 import Acc from './account/Acc';
 import Home from './home/Home';
-import { state } from './index.js';
+import Expense from './expense/Expense'; 
+import Diary from './diary/Diary';
 
 
 function App(props) {
@@ -18,14 +20,22 @@ function App(props) {
       ); 
       break;
     case "home": 
-      console.log('Page: home'); 
       Page = ( <Home name={state.account.user}/> ); 
+      console.log('Page: home'); 
       break;
     case "expense": 
+      Page = ( <Expense expense={props.expense}/> ); 
       console.log('Page: expense'); 
+      break;
+    case "diary":
+      Page = ( <Diary /> ); 
+      console.log("Page: diary"); 
       break;
 
     default:
+      Page = (
+        <Acc />
+      ); 
       break;
   }
 

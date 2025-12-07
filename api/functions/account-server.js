@@ -18,7 +18,9 @@ async function createAcc(db, req, res) {
 
   const acc = {
     user: user, 
-    pass: hashedPass
+    pass: hashedPass, 
+    expense: {}, 
+    diary: {}, 
   };
   console.log(acc);
   return acc;
