@@ -1,8 +1,11 @@
 import { serverPort, state, updateState, navigate } from '../index.js'; 
 import { useRef, forwardRef, useImperativeHandle, useState, useMemo, useEffect, useCallback } from 'react';
+import Table from '../components/Table';
+import Floating_Container from '../components/Floating_Container'; 
+import Floating_Button from '../components/Floating_Button'; 
 
 // ========================== TABLE BODY ====================================
-const thead = ['Date', 'Object', 'Price', 'Location']; 
+const info = ['date', 'object', 'price', 'location']; 
 
 const Table = ({ transactions, filters, onDelete }) => {
   const filteredTrans = useMemo(() => {
@@ -53,24 +56,7 @@ const Table = ({ transactions, filters, onDelete }) => {
   };
 
   return (
-    <table>
-      <thead>
-        <tr>{thead.map(head => <th key={`${head}`}>{head}</th>)}</tr>
-      </thead>
-      <tbody >
-        {filteredTrans.map(transaction => (
-          <tr key={transaction.id}>
-            <td key={`${transaction.id}-date`}>{transaction.date}</td>
-            <td key={`${transaction.id}-object`}>{transaction.object}</td>
-            <td key={`${transaction.id}-price`}>{transaction.price.toFixed(2)}</td>
-            <td key={`${transaction.id}-loc`} style={{textAlign:"center"}}>{transaction.location}</td>
-            <td key={`${transaction.id}-dlt`} className="dltCell-expense">
-              <button onClick={(e) => deleteTrans(e,transaction.id)}>Delete</button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Table headers={info} list={filteredTrans} onDelete={deleteTrans} />
   ); 
 }; 
 
@@ -145,31 +131,28 @@ const TransactionBloc = forwardRef(({ onSuccess }, ref) => {
   }; 
 
   return (
-    <div className="createTransaction-expense" style={{display: isVisible ? 'block' : 'none'}}>
-      <button ref={closeRef} className="close-expense" onClick={close} type="button" >X</button>
-      <h2 className="expense" style={{fontSize:"30px"}}>Create New Transaction </h2>
-      <div className="createInner-expense">
-        <form ref={formRef} className="newTransaction-expense" onSubmit={handleSubmit} method="POST">
-          <div className="form-group-expense">
-            <label htmlFor="date">Date</label> <br />
-            <input type="date" name="date" id="date"required />
-          </div>
-          <div className="form-group-expense">
-            <label htmlFor="object">Object</label> <br />
-            <input type="text" name="object" maxLength="100" id="object" required />
-          </div>
-          <div className="form-group-expense">
-            <label htmlFor="price">Price</label> <br/>
-            <input type="number" name="price" step="0.01" id="price"required />
-          </div>
-          <div className="form-group-expense">
-            <label htmlFor="location">Location (Optional)</label> <br />
-            <input type="text" name="location" maxLength="100" id="location"/>
-          </div>
-          <button type="submit" className="create-expense">Create</button>
-        </form>
-      </div>
-    </div>
+    <Floating_Container buttonRef={closeRef} 
+      close={close} text={{"Create New Transaction"}}>
+      <form ref={formRef} className="floating-form" onSubmit={handleSubmit} method="POST">
+        <div className="formGroup">
+          <label htmlFor="date">Date</label> <br />
+          <input type="date" name="date" id="date"required />
+        </div>
+        <div className="formGroup">
+          <label htmlFor="object">Object</label> <br />
+          <input type="text" name="object" maxLength="100" id="object" required />
+        </div>
+        <div className="formGroup">
+          <label htmlFor="price">Price</label> <br/>
+          <input type="number" name="price" step="0.01" id="price"required />
+        </div>
+        <div className="formGroup">
+          <label htmlFor="location">Location (Optional)</label> <br />
+          <input type="text" name="location" maxLength="100" id="location"/>
+        </div>
+        <button type="submit" className="submitForm">Create</button>
+      </form>
+    </Floating_Container>
   ); 
 });
 
@@ -197,7 +180,7 @@ const FilterTable = () => {
   }; 
   const handleDelete = (id) => setTransactions(t => t.filter(tx => tx.id !== id));
 
-// ================= ADD Transaction ===============
+  // ================= ADD Transaction ===============
   const handleClick = (e) => {
     e.preventDefault(); 
     if (formRef.current) {
@@ -217,11 +200,9 @@ const FilterTable = () => {
 
   return (
     <>
-      <div className="floating-expense">
-        <button className="transaction-expense" onClick={handleShow}>Add Transaction</button>
-      </div>
+      <Floating_Button text="Add Transaction" onClick={handleShow} />
       <TransactionBloc ref={blocRef} onSuccess={onSuccess}/>
-      <form ref={formRef} className="search-expense" onSubmit={search} >
+      <form ref={formRef} className="search" onSubmit={search} >
         <div style={{width: "350px", marginTop:"8px"}}>
           <div style={{display:"flex", gap:"8px", width:"100%"}}>
             <label htmlFor="date-form">
@@ -248,7 +229,7 @@ const FilterTable = () => {
           </label> <br />
           <input type="text" id="search-description" name="searchDescription" />
           <div style={{flexBasis: "100%", display:"flex", gap:"8px", alignItems:"flex-end"}}>
-            <button type="submit">Search</button>
+            <button type="submitForm">Search</button>
             <button type="button" onClick={handleClick}>Clear Filters</button>
           </div>
         </div>
@@ -317,17 +298,17 @@ const NewUser = () => {
 
   return (
     <>
-      <h1 className="expense">Welcome to the Expense Page</h1>
-      <div className="newUserContainer-expense">
-        <h2 className="expense">Create Your Expense Data</h2>
-        <form className="newUserForm-expense" ref={formRef} onSubmit={createExpenseInfo}>
+      <h1>Welcome to the Expense Page</h1>
+      <div className="container">
+        <h2>Create Your Expense Data</h2>
+        <form ref={formRef} onSubmit={createExpenseInfo}>
           <label htmlFor="currency">Currency</label> <br />
-          <input type="text" id="currency" name="currency" className="expense" pattern="(Rp||$)" required/> <br />
+          <input type="text" id="currency" name="currency" className="formField" pattern="(Rp||$)" required/> <br />
           <label htmlFor="desc" >Description </label> <br />
-          <input type="text" id="desc" className="expense" name="description" required/> <br />
+          <input type="text" id="desc" className="formField" name="description" required/> <br />
           <label htmlFor="balance" >Balance </label> <br />
-          <input type="number" id="balance" className="expense" name="balance" required/> <br />
-          <button type="submit">Enter Expense Page</button>
+          <input type="number" id="balance" className="formField" name="balance" required/> <br />
+          <button type="submitForm">Enter Expense Page</button>
         </form>
       </div>
     </>
@@ -349,10 +330,10 @@ const MainPage = () => {
 
   return (
     <>
-      <section className="balance-expense">
+      <section className="balance">
         Balance <br /> <span>{expense.currency}</span><span>{expense.balance}</span> 
       </section>
-      <h2 className="description-expense">{expense.description}</h2> <br/>
+      <h2>{expense.description}</h2> <br/>
       <FilterTable />
     </>
   );

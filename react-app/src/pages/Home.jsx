@@ -1,5 +1,6 @@
 import { routes, navigate } from '../index.js'; 
 import { useRef } from 'react'; 
+import Profile from '../components/Profile';
 
 const Button = () => {
   const btnRef = useRef(null); 
@@ -13,10 +14,7 @@ const Button = () => {
   };
 
   return (
-    <div className="profile" ref={btnRef}>
-      <button type="button" className="profileBtn" 
-        onClick={handleClick}></button>
-    </div>
+    <Profile />
   ); 
 };
 
@@ -38,7 +36,7 @@ const List = () => {
   };
   
   return (
-    <div className="apps" ref={listRef}>
+    <div className="appsList" ref={listRef}>
       {Object.entries(pageHash).map(([page,title]) => (
         <button key={page} className="appChildrenBtn" onClick={(e) => onClick(e,page)}>{title}</button>
       ))}

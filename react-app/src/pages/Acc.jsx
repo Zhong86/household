@@ -50,7 +50,7 @@ const Login = () => {
           placeholder="Enter your password" required />  
       </div>
       <div id="loginError" role="alert"></div>  
-      <button type="submit" className="acc">Login</button>
+      <button type="submit" className="submitForm">Login</button>
     </form>
   ); 
 }; 
@@ -114,7 +114,7 @@ const Register = () => {
           placeholder="Enter new password" />  
       </div>
       <div id="regisError" role="alert"></div>  
-      <button type="submit" className="acc">Register</button>
+      <button type="submit" className="submitForm">Register</button>
     </form>
   ); 
 }; 
