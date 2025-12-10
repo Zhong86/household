@@ -1,5 +1,5 @@
 import './Expense.css'; 
-import { NewUser, AddTransaction, FilterTable } from './expense.js';
+import { NewUser, FilterTable } from './expense.js';
 import { state } from '../index.js'; 
 
 const ExpensePage = () => {
@@ -20,7 +20,6 @@ const MainPage = () => {
         Balance <br /> <span>{expense.currency}</span><span>{expense.balance}</span> 
       </section>
       <h2 className="description-expense">{expense.description}</h2> <br/>
-      <AddTransaction />
       <FilterTable />
     </>
   );

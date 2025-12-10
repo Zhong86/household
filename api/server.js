@@ -111,7 +111,7 @@ router.post('/accounts/:user/expense/transactions', (req, res) => {
     return res.status(404).json({ error: 'user does not exist' }); 
   }
 
-  const transaction = newTransaction(req, res); 
+  const transaction = newTransaction(transactions, req, res); 
   transactions.push(transaction); 
   account.expense.balance += transaction.price; 
 

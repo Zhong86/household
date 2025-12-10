@@ -17,7 +17,7 @@ function newUser(req) {
 }
 
 //ADD TRANSACTION
-function newTransaction(req, res) {
+function newTransaction(transactions,req, res) {
   if (!req.body.date || !req.body.object || !req.body.price) {
     return res.status(400).json({ error: 'Missing parameters' }); 
   }
@@ -43,4 +43,4 @@ function newTransaction(req, res) {
   return transaction; 
 }
 
-export {newUser, newTransaction};
+module.exports = {newUser, newTransaction};

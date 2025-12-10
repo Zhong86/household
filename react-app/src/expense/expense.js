@@ -1,18 +1,15 @@
 import { serverPort, state, updateState, navigate } from '../index.js'; 
-import { useRef, forwardRef, useImperativeHandle, useState, useMemo, useEffect } from 'react';
+import { useRef, forwardRef, useImperativeHandle, useState, useMemo, useEffect, useCallback } from 'react';
 
 const thead = ['Date', 'Object', 'Price', 'Location']; 
 
-const Table = (props) => {
-  const { transactions: allTransactions, filters } = props; 
-
+const Table = ({ transactions, filters, onDelete }) => {
   const filteredTrans = useMemo(() => {
     if(!filters || Object.keys(filters).length === 0) {
-      return allTransactions.slice(); 
+      return transactions.slice(); 
     }
-    console.log('Table useMemo deps:', allTransactions.length, filters)
 
-    return allTransactions.filter(transaction => {
+    return transactions.filter(transaction => {
       //date filter
       if (filters.fromDate && new Date(transaction.date) < new Date(filters.fromDate)) return false; 
       if (filters.toDate && new Date(transaction.date) > new Date(filters.toDate)) return false; 
@@ -30,7 +27,7 @@ const Table = (props) => {
 
       return true; 
     }); 
-  }, [allTransactions, filters]); 
+  }, [transactions, filters]); 
 
   const deleteTrans = async (e, id) => {
     e.preventDefault(); 
@@ -45,13 +42,13 @@ const Table = (props) => {
       }); 
     if (!response.ok) {
       return console.error('Delete transaction error'); 
+    } else {
+      onDelete(id); 
     }
-    console.log(response); 
     const updatedAcc = await response.json(); 
     if(updatedAcc)
       updateState('account', updatedAcc); 
 
-    window.location.href = '/expense';
   };
 
   return (
@@ -100,7 +97,7 @@ async function createTrans(transaction) {
   }
 }
 
-const TransactionBloc = forwardRef((props, ref) => {
+const TransactionBloc = forwardRef(({ onSuccess }, ref) => {
   const closeRef = useRef(null); 
   const formRef = useRef(null); 
   const [isVisible, setIsVisible] = useState(false); 
@@ -133,8 +130,8 @@ const TransactionBloc = forwardRef((props, ref) => {
           const acc = await result.json(); 
           updateState('account', acc); 
           form.reset(); 
+          onSuccess(); 
           close(); 
-          window.location.href = '/expense';
         }
         return;
       } catch (error) {
@@ -178,12 +175,15 @@ const TransactionBloc = forwardRef((props, ref) => {
 // ================================ FILTER SEARCH ==============================
 const FilterTable = () => {
   const formRef = useRef(null); 
+  const blocRef = useRef(null); 
   const [currentFilters, setCurrentFilters] = useState({}); 
-  const transactions = state.account.expense.transactions;
+  const [transactions, setTransactions] = useState(state.account?.expense?.transactions || []);
 
   useEffect(() => {
-
-  }, [transactions]); 
+    if (state.account.expense.transactions) {
+      setTransactions(state.account.expense.transactions); 
+    }
+  }, []); 
 
   const search = (e) => {
     e.preventDefault(); 
@@ -194,7 +194,9 @@ const FilterTable = () => {
       setCurrentFilters(filters); //store the filters in state
     }
   }; 
+  const handleDelete = (id) => setTransactions(t => t.filter(tx => tx.id !== id));
 
+// ================= ADD Transaction ===============
   const handleClick = (e) => {
     e.preventDefault(); 
     if (formRef.current) {
@@ -202,9 +204,22 @@ const FilterTable = () => {
       form.reset(); 
     }
   }; 
+  const handleShow = () => {
+    blocRef.current?.show(); 
+  }
+  const onSuccess = useCallback(() => {
+    if (state.account?.expense.transactions) {
+      setTransactions(state.account?.expense.transactions); 
+    }
+  }, []); 
+
 
   return (
     <>
+      <div className="floating-expense">
+        <button className="transaction-expense" onClick={handleShow}>Add Transaction</button>
+      </div>
+      <TransactionBloc ref={blocRef} onSuccess={onSuccess}/>
       <form ref={formRef} className="search-expense" onSubmit={search} >
         <div style={{width: "350px", marginTop:"8px"}}>
           <div style={{display:"flex", gap:"8px", width:"100%"}}>
@@ -237,28 +252,13 @@ const FilterTable = () => {
           </div>
         </div>
       </form>
-      <Table transactions={state.account.expense.transactions} filters={currentFilters} />
+      <Table transactions={transactions} filters={currentFilters} 
+        onDelete={handleDelete}/>
     </>
 
   ); 
 };
 
-const AddTransaction = () => {
-  const blocRef = useRef(null); 
-
-  const handleClick = () => {
-    blocRef.current?.show(); 
-  };
-
-  return (
-    <>
-      <div className="floating-expense">
-        <button className="transaction-expense" onClick={handleClick}>Add Transaction</button>
-      </div>
-      <TransactionBloc ref={blocRef} />
-    </>
-  );
-}; 
 
 // ================================== NEW USER ===================================
 const NewUser = () => {
@@ -333,4 +333,4 @@ const NewUser = () => {
   ); 
 }; 
 
-export {NewUser, AddTransaction, FilterTable };
+export {NewUser, FilterTable };

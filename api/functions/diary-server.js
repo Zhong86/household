@@ -44,7 +44,7 @@ function deleteEntry(acc, id, res) {
   return updatedAcc;
 }
 
-export {
+module.exports ={
   createEntry,
   deleteEntry
 };
