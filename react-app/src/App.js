@@ -1,8 +1,8 @@
 import './App.css';
 import { state } from './index.js';
-import Acc from './account/Acc';
-import Home from './home/Home';
-import Expense from './expense/Expense'; 
+import Acc from './pages/Acc';
+import Home from './pages/Home';
+import Expense from './pages/Expense'; 
 import Diary from './diary/Diary';
 
 
