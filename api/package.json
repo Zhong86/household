@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +17,10 @@
     "crypto": "^1.0.1",
     "dompurify": "^3.3.0",
     "express": "^5.1.0",
-    "fs": "^0.0.1-security",
-    "path": "^0.12.7"
+    "mongoose": "^9.0.1"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.3",
+    "nodemon": "^3.1.11"
   }
 }
