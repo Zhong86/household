@@ -3,7 +3,6 @@ import { state } from './index.js';
 import Acc from './pages/Acc';
 import Home from './pages/Home';
 import Expense from './pages/Expense'; 
-import Diary from './diary/Diary';
 
 
 function App(props) {
@@ -28,7 +27,6 @@ function App(props) {
       console.log('Page: expense'); 
       break;
     case "diary":
-      Page = ( <Diary /> ); 
       console.log("Page: diary"); 
       break;
 

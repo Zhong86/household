@@ -29,7 +29,7 @@ router.post('/accounts', async (req, res) => {
 }); 
 
 //GET ONE
-router.get('/accounts/:id', getUser, async (req, res) => {
+router.post('/accounts/:user', getUser, async (req, res) => {
   const pass = res.user.pass; 
   try {
     const correct = await bcrypt.compare(req.body.pass, pass);
@@ -38,12 +38,15 @@ router.get('/accounts/:id', getUser, async (req, res) => {
     } else 
       res.status(400).send('Password is wrong');
   } catch (error) {
-    res.status(500).json({message: error.message}); 
+    res.status(500).json({
+      message: error.message, 
+      received: req.body
+    }); 
   }
 }); 
 
 //UPDATE
-router.patch('/accounts/:id', getUser, async (req, res) => {
+router.patch('/accounts/:user', getUser, async (req, res) => {
   if (req.body.user != null) {
     res.user.user = req.body.user;
   }
@@ -59,9 +62,9 @@ router.patch('/accounts/:id', getUser, async (req, res) => {
 });
 
 //DELETE 
-router.delete('/accounts/:id', async (req, res) => {
+router.delete('/accounts/:user', async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.params.id); 
+    await User.findOneAndDelete({user: req.params.user}); 
     res.json({ message: 'Deleted user'}); 
   } catch (error) {
     res.status(500).json({message: error.message}); 
@@ -71,7 +74,7 @@ router.delete('/accounts/:id', async (req, res) => {
 //MIDDLEWARE
 async function getUser(req, res, next) {
   try {
-    user = await User.findById(req.params.id); 
+    user = await User.find({user: req.params.user}); 
     if (user == null) {
       return res.status(404).json({message: 'User not found'})
     }
@@ -79,7 +82,7 @@ async function getUser(req, res, next) {
     return res.status(500).json({message: error.message}); 
   }
 
-  res.user = user; 
+  res.user = user[0]; 
   next(); 
 }
 

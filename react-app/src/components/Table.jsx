@@ -1,4 +1,4 @@
-const tableStyle {
+const tableStyle = {
   width: "550px", 
   margin:"auto",
   marginTop: "20px", 
@@ -17,15 +17,15 @@ const dltStyle = {
   backgroundColor: 'rgba(0,0,0,0)', 
 }; 
 
-const TData = ({key, value, index }) =>  {
+const TData = ({keyTmp, value, index }) =>  {
   return (
-    <td key={key}
+    <td key={keyTmp}
       style={{
         ...theadStyle,
-        textAlign: key ==== "location" ? "center" : "left",
+        textAlign: keyTmp === "location" ? "center" : "left",
         backgroundColor: index % 2 === 0 ? "#eeeeee" : "grey",
       }}>
-      {key === "price" ? value.toFixed(2) : value}
+      {keyTmp === "price" ? value.toFixed(2) : value}
     </td>
   ); 
 }; 
@@ -34,24 +34,25 @@ const Table = ({headers, list, onDelete}) => {
   const thead = headers.map(h => h.charAt(0).toUpperCase() + h.slice(1));
 
   return (
-    <table>
+    <table style={tableStyle}>
       <thead style={theadStyle}>
-        <tr>{thead.map(head => <th key={`${head}`}>{head}</th>)}</tr>
+        <tr>{thead.map((head, i) => <th key={`${i}-${head}`}>{head}</th>)}</tr>
       </thead>
       <tbody>
         {list.map((child, i) => {
-          const id = child.id; 
+          const id = child._id; 
 
           return (
             <tr key={id}>
               {headers.map(h => (
-                <TData key={`${id}-${h}`} value={child[h]} index={i}/>
+                <TData keyTmp={`${id}-${h}`} value={child[h]} index={i}/>
               ))}
-              onDelete ? <td key={`${id}-dlt`} style={dltStyle}>
-                <button onClick={(e) => onDelete?(e,id)}>Delete</button> : <> </>
-              </td>
+              {onDelete && 
+                (<td key={`${id}-dlt`} style={dltStyle}>
+                <button onClick={(e) => onDelete(e,id)}>Delete</button>
+              </td>)}
             </tr>
-          ) 
+          );
         })}
       </tbody>
     </table>

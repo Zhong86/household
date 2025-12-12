@@ -14,7 +14,7 @@ const Button = () => {
   };
 
   return (
-    <Profile />
+    <Profile handleClick={handleClick}/>
   ); 
 };
 

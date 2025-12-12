@@ -1,13 +1,13 @@
 import { serverPort, state, updateState, navigate } from '../index.js'; 
 import { useRef, forwardRef, useImperativeHandle, useState, useMemo, useEffect, useCallback } from 'react';
 import Table from '../components/Table';
-import Floating_Container from '../components/Floating_Container'; 
-import Floating_Button from '../components/Floating_Button'; 
+import FloatingContainer from '../components/FloatingContainer'; 
+import FloatingButton from '../components/FloatingButton'; 
 
 // ========================== TABLE BODY ====================================
 const info = ['date', 'object', 'price', 'location']; 
 
-const Table = ({ transactions, filters, onDelete }) => {
+const TransactionTable = ({ transactions, filters, onDelete }) => {
   const filteredTrans = useMemo(() => {
     if(!filters || Object.keys(filters).length === 0) {
       return transactions.slice(); 
@@ -35,8 +35,7 @@ const Table = ({ transactions, filters, onDelete }) => {
 
   const deleteTrans = async (e, id) => {
     e.preventDefault(); 
-    
-    const response = await fetch(serverPort +`/accounts/${state.account.user}/expense/transactions/${id}`, 
+    const response = await fetch(serverPort +`/expense/${state.expense.userId}/transactions/${id}`, 
       { 
         method: 'DELETE' , 
         headers: {
@@ -49,10 +48,9 @@ const Table = ({ transactions, filters, onDelete }) => {
     } else {
       onDelete(id); 
     }
-    const updatedAcc = await response.json(); 
-    if(updatedAcc)
-      updateState('account', updatedAcc); 
-
+    const updatedExpense = await response.json(); 
+    if(updatedExpense)
+      updateState('expense', updatedExpense); 
   };
 
   return (
@@ -64,8 +62,7 @@ const Table = ({ transactions, filters, onDelete }) => {
 // ============================== CREATE TRANSACTION ==============================
 async function createTrans(transaction) {
   try {
-    const name = state.account.user; 
-    const response = await fetch(serverPort + `/accounts/${name}/expense/transactions`, {
+    const response = await fetch(serverPort + `/expense/${state.expense.userId}/transactions`, {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json', 
@@ -114,10 +111,10 @@ const TransactionBloc = forwardRef(({ onSuccess }, ref) => {
 
         const result = await createTrans(data); 
         if (result.ok) {
-          const acc = await result.json(); 
-          updateState('account', acc); 
-          form.reset(); 
+          const newExpense = await result.json(); 
+          updateState('expense', newExpense); 
           onSuccess(); 
+          form.reset(); 
           close(); 
         }
         return;
@@ -131,8 +128,8 @@ const TransactionBloc = forwardRef(({ onSuccess }, ref) => {
   }; 
 
   return (
-    <Floating_Container buttonRef={closeRef} 
-      close={close} text={{"Create New Transaction"}}>
+    <FloatingContainer buttonRef={closeRef} isVisible={isVisible}
+      close={close} text="Create New Transaction">
       <form ref={formRef} className="floating-form" onSubmit={handleSubmit} method="POST">
         <div className="formGroup">
           <label htmlFor="date">Date</label> <br />
@@ -152,7 +149,7 @@ const TransactionBloc = forwardRef(({ onSuccess }, ref) => {
         </div>
         <button type="submit" className="submitForm">Create</button>
       </form>
-    </Floating_Container>
+    </FloatingContainer>
   ); 
 });
 
@@ -161,14 +158,11 @@ const FilterTable = () => {
   const formRef = useRef(null); 
   const blocRef = useRef(null); 
   const [currentFilters, setCurrentFilters] = useState({}); 
-  const [transactions, setTransactions] = useState(state.account?.expense?.transactions || []);
+  const [transactions, setTransactions] = useState(state.expense?.transactions || []);
 
   useEffect(() => {
-    if (state.account.expense.transactions) {
-      setTransactions(state.account.expense.transactions); 
-    }
-  }, []); 
-
+    setTransactions(state.expense?.transactions); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.expense]);  
   const search = (e) => {
     e.preventDefault(); 
     if(formRef.current) {
@@ -192,15 +186,13 @@ const FilterTable = () => {
     blocRef.current?.show(); 
   }
   const onSuccess = useCallback(() => {
-    if (state.account?.expense.transactions) {
-      setTransactions(state.account?.expense.transactions); 
-    }
+    setTransactions(state.expense); 
   }, []); 
 
 
   return (
     <>
-      <Floating_Button text="Add Transaction" onClick={handleShow} />
+      <FloatingButton text="Add Transaction" onClick={handleShow} />
       <TransactionBloc ref={blocRef} onSuccess={onSuccess}/>
       <form ref={formRef} className="search" onSubmit={search} >
         <div style={{width: "350px", marginTop:"8px"}}>
@@ -234,7 +226,7 @@ const FilterTable = () => {
           </div>
         </div>
       </form>
-      <Table transactions={transactions} filters={currentFilters} 
+      <TransactionTable transactions={transactions} filters={currentFilters} 
         onDelete={handleDelete}/>
     </>
 
@@ -250,14 +242,13 @@ const NewUser = () => {
     e.preventDefault(); 
     if(formRef.current) {
       const form = formRef.current; 
-      const btn = form.querySelector('[type="submit"]'); 
+      const btn = form.querySelector('button[type="submit"]'); 
 
       try {
         btn.disabled = true; 
         btn.textContent = 'Adding New Expense Data...';
 
         //Currency, Description, Balance, Transactions
-        const account = state.account; 
         const formData = new FormData(form); 
         const data = Object.fromEntries(formData); 
         const expense = {
@@ -268,7 +259,7 @@ const NewUser = () => {
         }; 
 
         try {
-          const response = await fetch(serverPort + `/accounts/${account.user}/expense`, {
+          const response = await fetch(serverPort + `/expense/`+state.account._id, {
             method: 'POST', 
             headers: {
               'Content-Type': 'application/json', 
@@ -279,10 +270,10 @@ const NewUser = () => {
           if(!response.ok) throw new Error('Failed to update expense');  
 
           const accData = await response.json(); 
-          updateState('account', accData);
+          updateState('expense', accData);
 
         } catch (error) {
-          console.error('Server error (update expense): ', error); 
+          console.error('Error (create expense): ', error); 
         }
 
         form.reset(); 
@@ -308,7 +299,7 @@ const NewUser = () => {
           <input type="text" id="desc" className="formField" name="description" required/> <br />
           <label htmlFor="balance" >Balance </label> <br />
           <input type="number" id="balance" className="formField" name="balance" required/> <br />
-          <button type="submitForm">Enter Expense Page</button>
+          <button type="submit" className="submitForm">Enter Expense Page</button>
         </form>
       </div>
     </>
@@ -316,18 +307,7 @@ const NewUser = () => {
 }; 
 
 // ================================ PAGES ==============================
-const ExpensePage = () => {
-  const expense = state.account.expense; 
-  if(Object.keys(expense).length === 0) {
-    return <NewUser />
-  } else {
-    return <MainPage />
-  }
-}; 
-
-const MainPage = () => {
-  const expense = state.account.expense;
-
+const MainPage = ({expense}) => {
   return (
     <>
       <section className="balance">
@@ -338,5 +318,35 @@ const MainPage = () => {
     </>
   );
 };
+const ExpensePage = () => {
+  const [expense, setExpense] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchExpense() {
+      try {
+        const response = await fetch(serverPort + '/expense/' + state.account._id);
+        if (!response.ok) throw new Error('Fetch failed');
+        const data = await response.json(); // Parse the response
+        setExpense(data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchExpense();
+  }, []); // Empty deps = run once on mount
+
+  if (loading) return <div>Loading...</div>;
+  if (error || expense === -1) {
+    return <NewUser />;
+  }
+  else {
+    updateState('expense', expense); 
+    return <MainPage expense={expense} />;
+  }
+}; 
 
 export default ExpensePage; 

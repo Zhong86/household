@@ -8,9 +8,10 @@ router.post('/expense/:userId', async (req, res) => {
     userId: req.params.userId, 
     currency: req.body.currency, 
     description: req.body.description, 
-    balance: balance, 
+    balance: req.body.balance, 
     transactions: [],
   }); 
+  console.log(expense); 
   try {
     const newExpense = await expense.save(); 
     res.status(201).json(newExpense); 
@@ -20,8 +21,16 @@ router.post('/expense/:userId', async (req, res) => {
 });
 
 //GET ONE EXPENSE
-router.get('/expense/:userId', getExpense, (req, res) => {
-  res.send(res.expense); 
+router.get('/expense/:userId', async (req, res) => {
+  try {
+    const expense = await Expense.findOne({userId: req.params.userId}); 
+    if (!expense) {
+      return res.send(-1); 
+    }
+    res.send(expense); 
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
 }); 
 
 //========================== TRANSACTION =========================
@@ -69,13 +78,13 @@ router.delete('/expense/:userId/transactions/:id', getExpense, async (req, res) 
 async function getExpense(req, res, next) {
   try {
     expense = await Expense.find({userId: req.params.userId}); 
-    if (expense == null) {
+    if (expense.length == 0) {
       return res.status(404).json({message: 'User not found'}); 
     }
   } catch (error) {
     return res.status(500).json({message: error.message }); 
   }
-  res.expense = expense; 
+  res.expense = expense[0]; 
   next(); 
 }
 

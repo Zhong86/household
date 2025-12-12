@@ -22,16 +22,16 @@ const innerBodyStyle = {
   borderRadius: "8px", 
 };
 
-const Floating_Container = ({buttonRef, close, text }) => {
+const FloatingContainer = ({ isVisible, buttonRef, close, text, children}) => {
   return (
     <div className="floatingContainer" style={{display: isVisible ? 'block' : 'none'}}>
       <button ref={buttonRef} style={closeBtnStyle} onClick={close} type="button" >X</button>
       <h2  style={{fontSize:"30px"}}>{text}</h2>
       <div style={innerBodyStyle}>
-        
+        {children}
       </div>
     </div>
   ); 
 };
 
-export default Floating_Container; 
+export default FloatingContainer; 
