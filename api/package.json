@@ -15,7 +15,6 @@
     "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.1",
     "crypto": "^1.0.1",
-    "dompurify": "^3.3.0",
     "express": "^5.1.0",
     "mongoose": "^9.0.1"
   },
