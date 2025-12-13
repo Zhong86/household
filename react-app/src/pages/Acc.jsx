@@ -1,5 +1,7 @@
 import { serverPort, updateState, navigate } from '../index.js';
 import { useRef } from 'react';
+import { useContext } from 'react'; 
+import { StateContext } from './context/AppContext'; 
 
 // ============================ LOGIN ==============================
 const Login = () => {

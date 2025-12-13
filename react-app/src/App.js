@@ -1,43 +1,44 @@
 import './App.css';
-import { state } from './index.js';
 import Acc from './pages/Acc';
 import Home from './pages/Home';
 import Expense from './pages/Expense'; 
+import { StateContext } from './context/AppContext'; 
+import { useState } from 'react'; 
 
 
-function App(props) {
-  let Page = ( 
-    <div className="App">
+function App({path}) {
+  const [data, setData] = useState(null); 
 
-    </div>
-  ); 
-  switch (props.form) {
+  let Page = ({children}) => {
+    <StateContext value={[data, setData]}>
+      <div className="App">
+        {children}
+      </div>
+    </StateContext>
+  }; 
+  switch (path) {
     case "login":
-      console.log('Page: login'); 
-      Page = (
-        <Acc />
+      return (
+        <Page> <Acc /> </Page>
       ); 
-      break;
     case "home": 
-      Page = ( <Home name={state.account.user}/> ); 
-      console.log('Page: home'); 
-      break;
+      return (
+        <Page> <Home /> </Page>
+      ); 
     case "expense": 
-      Page = ( <Expense expense={props.expense}/> ); 
-      console.log('Page: expense'); 
-      break;
+      return (
+        <Page> <Expense /> </Page>
+      ); 
     case "diary":
-      console.log("Page: diary"); 
-      break;
+      return (
+        <Page> <Diary /> </Page>
+      ); 
 
     default:
-      Page = (
-        <Acc />
+      return (
+        <Page> <Acc /> </Page>
       ); 
-      break;
   }
-
-  return Page;
 }
 
 export default App;

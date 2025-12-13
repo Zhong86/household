@@ -32,10 +32,10 @@ function updateState(property, newData) {
 }
 
 const routes = {
-  '/login':  <App form={"login"} /> , 
-  '/home': <App form={"home"} />, 
-  '/expense': <App form={"expense"} />,  
-  '/diary': <App form={"diary"} />
+  '/login':  <App stateInfo={} path={"login"} /> , 
+  '/home': <App path={"home"} />, 
+  '/expense': <App path={"expense"} />,  
+  '/diary': <App path={"diary"} />
 };
 
 function updateRoute() {
