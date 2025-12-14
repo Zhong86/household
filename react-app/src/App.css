@@ -3,6 +3,11 @@
   --sColor: white; 
 }
 
+html, body, #root {
+  height: 100%;
+  padding: 0;
+}
+
 body {
   background-color: var(--pColor); 
 }
@@ -42,6 +47,7 @@ h2 {
 .formGroup {
   position:relative;
   width: 100%;
+  text-align: left; 
   padding:8px;
   margin:auto;
   margin-top:0;
@@ -84,8 +90,6 @@ button.submitForm {
   width: 30%;
   height: 15%;
   bottom:0;
-  left: 50%; 
-  transform: translateX(-50%);
 }
 
 /******************************* HOME *********************/

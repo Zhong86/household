@@ -48,13 +48,13 @@ const List = () => {
 
 
 // ========================== PAGE =======================================
-const HomePage = (props) => (
-  <section>
-    <h2 id="title">{props.name}'s Home</h2>
+const HomePage = ({name}) => (
+  <>
+    <h2>{name}'s Home</h2>
     <Button />
     <List />
 
-  </section>
+  </>
 );
 
 export default HomePage; 

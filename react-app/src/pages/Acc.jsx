@@ -1,42 +1,45 @@
-import { serverPort, updateState, navigate } from '../index.js';
-import { useRef } from 'react';
-import { useContext } from 'react'; 
-import { StateContext } from './context/AppContext'; 
+import { navigate } from '../index.js';
+import { useRef, useContext, useState } from 'react';
+import { StateContext } from '../context/AppContext'; 
+import { createAcc, getAcc } from '../api/accFetch'; 
 
 // ============================ LOGIN ==============================
 const Login = () => {
+  const { dispatch } = useContext(StateContext); 
+  const [submitting, setSubmitting] = useState(false); 
+  const [error, setError] = useState(''); 
   const loginFormRef = useRef(null); 
-  const handleSubmit = async (event) => {
-    event.preventDefault(); 
-    console.log('login clicked'); 
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+    if(!loginFormRef.current) return; 
+    setSubmitting(true); 
     const loginForm = loginFormRef.current; 
-    const loginBtn = loginForm.querySelector('button[type="submit"]'); 
 
     try {
-      loginBtn.disabled = true; 
-      loginBtn.textContent = "Loggin in..."; 
-
       const form = new FormData(loginForm); 
       const data = Object.fromEntries(form); 
-      
       const result = await getAcc(data);
+
       if (result.error) {
-        const err = document.getElementById('loginError'); 
-        err.textContent = data.error;
-      }
+        setError(result.error); 
+        setSubmitting(false); 
+        return; 
+      }  
+   
+      dispatch({
+        type: 'setAcc', 
+        account: result
+      });
 
       loginForm.reset(); 
-
-      updateState('account', result); 
+      setSubmitting(false); 
+      setError(''); 
       navigate('/home'); 
-
-      return result; 
     } catch (error) {
-      alert('Login failed. Try again'); 
-    } finally {
-      loginBtn.disabled = false; 
-      loginBtn.textContent = "Login"
-    }
+      setError(error.message); 
+      setSubmitting(false); 
+    } 
   }; 
 
   return (
@@ -51,29 +54,25 @@ const Login = () => {
         <input id="pass" className="formField" type="text" name="pass"
           placeholder="Enter your password" required />  
       </div>
-      <div id="loginError" role="alert"></div>  
-      <button type="submit" className="submitForm">Login</button>
+      <div role="alert">{error}</div>  
+      <button type="submit" className="submitForm"
+        disabled={submitting}>Login</button>
     </form>
   ); 
 }; 
 
-function logout() {
-  updateState('account', null); 
-  navigate ('/login'); 
-}
-
 // ========================== REGISTRATION ==============================
 const Register = () => {
+  const { dispatch } = useContext(StateContext); 
+  const [submitting, setSubmitting] = useState(false); 
+  const [error, setError] = useState(''); 
   const regisFormRef = useRef(null);  
-  const handleSubmit = async (event) => {
-    event.preventDefault(); 
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
     const registerForm = regisFormRef.current; 
-    const createBtn = registerForm.querySelector('button[type="submit"]');
 
     try {
-      createBtn.disabled = true;
-      createBtn.textContent = 'Creating account...';
-
       //process data
       const formData = new FormData(registerForm);
       const data = Object.fromEntries(formData);
@@ -82,24 +81,24 @@ const Register = () => {
       const result = await createAcc(jsonData); 
 
       if(result.error) {
-        const err = document.getElementById('regisError'); 
-        err.textContent = result.error;
-        return -1; 
+        setError(result.error); 
+        setSubmitting(false); 
+        return; 
       }
+      
+      dispatch({
+        type: 'setAcc',
+        account: result
+      }); 
 
       registerForm.reset(); 
-      alert(`Welcome, ${result.user}. Your account has been created`); 
-
-      updateState('account', result); 
+      setSubmitting(false); 
+      setError(''); 
       navigate('/home'); 
-
-      return result; 
     } catch (error) {
-      alert(`An unexpected error occured. Please try again`); 
-    } finally {
-      createBtn.disabled = false; 
-      createBtn.textContent = 'Register';
-    }
+      setError(error.message); 
+      setSubmitting(false); 
+    }  
   }; 
 
   return (
@@ -115,56 +114,16 @@ const Register = () => {
         <input id="pass" className="formField" type="text" minLength="8" pattern="[a-zA-Z0-9!@#$%^&*_]+" name="pass" required title="Password can only be letters, numbers" 
           placeholder="Enter new password" />  
       </div>
-      <div id="regisError" role="alert"></div>  
-      <button type="submit" className="submitForm">Register</button>
+      <div role="alert">{error}</div>  
+      <button type="submit" className="submitForm" 
+        disabled={submitting}>Register</button>
     </form>
   ); 
 }; 
 
 
-// ================================ CREATE ACC =====================================
-async function createAcc(acc) {
-  try {
-    const result = await fetch(serverPort + '/accounts', {
-      method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: acc
-    });
-    console.log(result); 
-    if(!result.ok) {
-      throw new Error(`HTTP error. Status: ${result.status}`); 
-    }
-
-    return await result.json(); 
-  } catch (error) {
-    console.error('Account creation failed: ', error);
-    return { error: error.message || 'Network error occured' }; 
-  }
-};
-
-// ================================= GET ACC =================================
-async function getAcc(user) {
-  try {
-    const response = await fetch(serverPort + '/accounts/' + encodeURIComponent(user.user), {
-      method: 'POST', 
-      headers: { 'Content-Type': 'application/json' }, 
-      body: JSON.stringify(user)
-    });
-
-    if(!response.ok) {
-      return console.error('Get user error ', response.error); 
-    }
-    return await response.json(); 
-  } catch (error) {
-    return { error: error.message || 'Unknown error' }; 
-  }
-}
-
 const LoginPage = () => (
-  <section>
+  <>
     <div className="container">
       <h2>Login</h2>
       <Login />
@@ -173,8 +132,7 @@ const LoginPage = () => (
       <h2>Register</h2>
       <Register />
     </div>
-  </section>
+  </>
 );
 
 export default LoginPage;
-export { logout }; 

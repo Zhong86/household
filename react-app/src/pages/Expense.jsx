@@ -1,8 +1,9 @@
-import { serverPort, state, updateState, navigate } from '../index.js'; 
-import { useRef, forwardRef, useImperativeHandle, useState, useMemo, useEffect, useCallback } from 'react';
+import { serverPort, navigate } from '../index.js'; 
+import { useRef, forwardRef, useImperativeHandle, useState, useMemo, useEffect, useCallback, useContext } from 'react';
+import { StateContext } from '../context/AppContext'; 
 import Table from '../components/Table';
 import FloatingContainer from '../components/FloatingContainer'; 
-import FloatingButton from '../components/FloatingButton'; 
+import FloatingButton from '../components/FloatingButton';
 
 // ========================== TABLE BODY ====================================
 const info = ['date', 'object', 'price', 'location']; 
@@ -60,27 +61,6 @@ const TransactionTable = ({ transactions, filters, onDelete }) => {
 
 
 // ============================== CREATE TRANSACTION ==============================
-async function createTrans(transaction) {
-  try {
-    const response = await fetch(serverPort + `/expense/${state.expense.userId}/transactions`, {
-      method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json'
-      }, 
-      body: JSON.stringify(transaction)
-    }); 
-
-    if(!response.ok) {
-      console.error('Error in creating new transaction'); 
-    }
-
-    return response; 
-  } catch (error) {
-    console.error('Error in createTransaction: ', error); 
-  }
-}
-
 const TransactionBloc = forwardRef(({ onSuccess }, ref) => {
   const closeRef = useRef(null); 
   const formRef = useRef(null); 
