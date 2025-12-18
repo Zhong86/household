@@ -6,6 +6,8 @@ export default function dataReducer(data, action) {
       return { ...data, account: action.account };
     case 'setExpense': 
       return { ...data, expense: action.expense }; 
+    case 'setGallery': 
+      return { ...data, gallery: action.gallery }; 
     default:
       return { ...data }; 
   }

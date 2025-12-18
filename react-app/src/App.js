@@ -1,8 +1,9 @@
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Acc from './pages/Acc';
 import Home from './pages/Home';
-// import Expense from './pages/Expense'; 
-// import Diary from './pages/Diary'; 
+import Expense from './pages/Expense'; 
+import Gallery from './pages/Gallery'; 
 import { StateContext } from './context/AppContext'; 
 import useAppData from './hooks/useAppData'; 
 
@@ -23,11 +24,11 @@ function getPage(path) {
     case "login":
       return <Acc />; 
     case "home": 
-      return <Home name={data.user}/>; 
-    // case "expense": 
-    //   return <Expense />; 
-    // case "diary":
-    //   return <Diary />; 
+      return <Home />; 
+    case "expense": 
+      return <Expense />; 
+    case "gallery":
+      return <Gallery />; 
     default:
       return <Acc />; 
   }

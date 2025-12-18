@@ -1,12 +1,12 @@
-export async function createExpense(userId, expenseData) {
-  const url = `${process.env.REACT_APP_SERVER_PORT}/expense/${userId}`;
+export async function createGallery(userId, galleryData) {
+  const url = `${process.env.REACT_APP_SERVER_PORT}/gallery/${userId}`;
   try {
     const response = await fetch(url, {
       method: 'POST', 
       headers: {
         'Content-Type': 'application/json', 
       },
-      body: JSON.stringify(expenseData)
+      body: JSON.stringify(galleryData)
     }); 
     if (!response.ok) {
       const errorData = await response.json();
@@ -18,8 +18,8 @@ export async function createExpense(userId, expenseData) {
   }
 }
 
-export async function getExpense(userId) {
-  const url =  `${process.env.REACT_APP_SERVER_PORT}/expense/${userId}`;
+export async function getGallery(userId) {
+  const url = `${process.env.REACT_APP_SERVER_PORT}/gallery/${userId}`;
   try {
     const response = await fetch(url, {
       method: 'GET'
@@ -34,16 +34,16 @@ export async function getExpense(userId) {
   }
 }
 
-export async function createTrans(userId, transaction) {
-  const url = `${process.env.REACT_APP_SERVER_PORT}/expense/${userId}/transactions`;
+export async function createEntry(userId, entry) {
+  const url = `${process.env.REACT_APP_SERVER_PORT}/gallery/${userId}/entry`;
   try {
     const response = await fetch(url, {
-      method: 'POST',
+      method: 'POST', 
       headers: {
         'Content-Type': 'application/json', 
         'Accept': 'application/json'
       }, 
-      body: JSON.stringify(transaction)
+      body: JSON.stringify(entry)
     }); 
     if (!response.ok) {
       const errorData = await response.json();
@@ -55,16 +55,33 @@ export async function createTrans(userId, transaction) {
   }
 }
 
-export async function deleteTrans(userId, id) {
-  const url = `${process.env.REACT_APP_SERVER_PORT}/expense/${userId}/transactions/${id}`;
+async function editEntry(userId, entryId, entry) {
+  const url = `${process.env.REACT_APP_SERVER_PORT}/gallery/${userId}/entry/${entryId}`;
   try {
     const response = await fetch(url, {
-      method: 'DELETE' , 
+      method: 'PATCH', 
+      body: JSON.stringify(entry)
+    }); 
+    if (!response.ok) {
+      const errorData = await response.json();
+      return { error: errorData.message || `HTTP ${response.status}` };
+    }
+    return await response.json(); 
+  } catch (error) {
+    return { error: error.message }; 
+  }
+}
+
+export async function deleteEntry(userId, entryId) {
+  const url = `${process.env.REACT_APP_SERVER_PORT}/gallery/${userId}/entry/${entryId}`;
+  try {
+    const response = await fetch(url, {
+      method: 'DELETE', 
       headers: {
         'Content-Type': 'application/json', 
         'Accept': 'application/json'
-      },
-    });  
+      }
+    }); 
     if (!response.ok) {
       const errorData = await response.json();
       return { error: errorData.message || `HTTP ${response.status}` };

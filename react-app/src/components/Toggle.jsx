@@ -14,3 +14,5 @@ const Toggle = ({option1, option2, onClick1, onClick2}) => {
     </div>
   ); 
 }; 
+
+export default Toggle; 

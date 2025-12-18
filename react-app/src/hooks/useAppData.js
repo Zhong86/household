@@ -6,6 +6,7 @@ export default function useAppData() {
   const [data, dispatch] = useReducer(dataReducer, getInitialData());
   
   useEffect(() => {
+    console.log(data); 
     localStorage.setItem(storageKey, JSON.stringify(data)); 
   }, [data]); 
 
@@ -13,7 +14,8 @@ export default function useAppData() {
 }
 
 function getInitialData() {
-  const empty = { account: null, expense: null, diary: null }; 
+  const empty = { account: null, expense: null, gallery: null }; 
+  localStorage.removeItem(storageKey); //REMOVE LINE WHEN DONE DEV
   return localStorage.getItem(storageKey) 
     ? JSON.parse(localStorage.getItem(storageKey)) : empty; 
 }

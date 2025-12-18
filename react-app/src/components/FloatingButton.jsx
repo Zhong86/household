@@ -12,6 +12,9 @@ const btnStyle = {
   padding: "4px", 
   fontSize: "16px", 
   fontWeight: "bold", 
+  color: 'white', 
+  background: '#454545', 
+  borderRadius: '8px'
 }; 
 
 const FloatingButton = ({text, onClick}) => (

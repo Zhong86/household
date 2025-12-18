@@ -2,29 +2,28 @@ const closeBtnStyle = {
   position: "relative", 
   width: "30px", 
   height: "30px", 
-  background: "rgba(0,0,0,0)",
-  border: "none", 
+  background: "none",
   color: "black", 
   textAlign: "center", 
   display: "inline-block", 
   borderRadius: "50%", 
+  border: 'none', 
   fontSize: "20px", 
-  left: "45", 
   top:"10px", 
+  right: '2%',
   padding: "2px", 
 }; 
 
 const innerBodyStyle = {
   width: "90%", 
   height: "80%", 
-  margin:"auto", 
+  margin: 'auto', 
   marginTop: "20px", 
-  borderRadius: "8px", 
 };
 
-const FloatingContainer = ({ isVisible, close, text, children}) => {
+const FloatingContainer = ({ close, text, children}) => {
   return (
-    <div className="floatingContainer" style={{display: isVisible ? 'block' : 'none'}}>
+    <div className="floatingContainer">
       <button style={closeBtnStyle} onClick={close} type="button" >X</button>
       <h2  style={{fontSize:"30px"}}>{text}</h2>
       <div style={innerBodyStyle}>

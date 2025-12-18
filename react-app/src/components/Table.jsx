@@ -39,7 +39,7 @@ const Table = ({headers, list, onDelete}) => {
         <tr>{thead.map((head, i) => <th key={`${i}-${head}`}>{head}</th>)}</tr>
       </thead>
       <tbody>
-        {list.map((child, i) => {
+        {list && list.map((child, i) => {
           const id = child._id; 
 
           return (

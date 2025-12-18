@@ -4,11 +4,6 @@ const mongoose = require('mongoose');
 require('dotenv').config(); 
 
 const port = process.env.PORT || 5000; 
-const pages = [
-  ['/', 'index.html'], 
-  ['/expense', 'bank/index.html'], 
-  ['/diary', 'diary/index.html']
-];
 
 //store data
 mongoose.connect(process.env.DATABASE_URL); 
@@ -25,7 +20,6 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
-
   next();
 });
 
@@ -37,6 +31,9 @@ app.use('/api', accRouter);
 
 const expenseRouter = require('./routes/expenseRoute'); 
 app.use('/api', expenseRouter); 
+
+const galleryRouter = require('./routes/galleryRoute'); 
+app.use('/api', galleryRouter); 
 
 //Router
 app.listen(port, '0.0.0.0', () => {

@@ -9,6 +9,10 @@ export async function createAcc(acc) {
       }, 
       body: acc
     });
+    if (!response.ok) {
+      const errorData = await response.json();
+      return { error: errorData.message || `HTTP ${response.status}` };
+    }
     return await response.json(); 
   } catch (error) {
     return { error: error.message || 'Network error occured' }; 
@@ -16,7 +20,7 @@ export async function createAcc(acc) {
 }
 
 export async function getAcc(acc) {
-  const url = process.env.SERVER_PORT + '/accounts'; 
+  const url = process.env.REACT_APP_SERVER_PORT + '/accounts/'; 
   try {
     const response = await fetch(url + encodeURIComponent(acc.user), 
       {
@@ -24,6 +28,10 @@ export async function getAcc(acc) {
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify(acc)
       }); 
+    if (!response.ok) {
+      const errorData = await response.json();
+      return { error: errorData.message || `HTTP ${response.status}` };
+    }
     return await response.json(); 
   } catch (error) {
     return { error: error.message || 'Get user error' }; 

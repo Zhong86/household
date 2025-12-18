@@ -13,9 +13,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     if(!loginFormRef.current) return; 
-    setSubmitting(true); 
     const loginForm = loginFormRef.current; 
 
+    if(!loginForm.checkValidity()) {
+      loginForm.classList.add('was-validated'); 
+      return; 
+    }
+
+    setSubmitting(true); 
     try {
       const form = new FormData(loginForm); 
       const data = Object.fromEntries(form); 
@@ -23,7 +28,6 @@ const Login = () => {
 
       if (result.error) {
         setError(result.error); 
-        setSubmitting(false); 
         return; 
       }  
    
@@ -31,32 +35,38 @@ const Login = () => {
         type: 'setAcc', 
         account: result
       });
+      dispatch({type: 'setExpense', expense: null}); 
+      dispatch({type: 'setGaller', gallery: null}); 
 
       loginForm.reset(); 
-      setSubmitting(false); 
       setError(''); 
       navigate('/home'); 
     } catch (error) {
       setError(error.message); 
+    } finally {
       setSubmitting(false); 
-    } 
+      loginForm.classList.remove('was-validated'); 
+    }
   }; 
 
   return (
-    <form id="loginForm" ref={loginFormRef} onSubmit={handleSubmit} >
-      <div className="formGroup">
+    <form ref={loginFormRef} onSubmit={handleSubmit} noValidate>
+      <div className="mb-3">
         <label htmlFor="username">Username</label> <br />
-        <input id="username" className="formField" type="text" name="user"
+        <input id="username" className="form-control" type="text" name="user"
           placeholder="Enter your username" required />  
       </div>
-      <div className="formGroup">
+      <div className="mb-3">
         <label htmlFor="pass">Password</label>  <br />
-        <input id="pass" className="formField" type="text" name="pass"
+        <input id="pass" className="form-control" type="text" name="pass"
           placeholder="Enter your password" required />  
       </div>
-      <div role="alert">{error}</div>  
-      <button type="submit" className="submitForm"
-        disabled={submitting}>Login</button>
+      { error !== '' &&
+        <div className="alert alert-danger" role="alert">{error}</div>  }
+      <div className="d-flex justify-content-center">
+        <button type="submit" className="btn btn-primary"
+          disabled={submitting}>Login</button>
+      </div>
     </form>
   ); 
 }; 
@@ -70,8 +80,15 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
+    if(!regisFormRef.current) return; 
     const registerForm = regisFormRef.current; 
 
+    if (!registerForm.checkValidity()) {
+      registerForm.classList.add('was-validated');
+      return; 
+    }
+
+    setSubmitting(true); 
     try {
       //process data
       const formData = new FormData(registerForm);
@@ -82,41 +99,44 @@ const Register = () => {
 
       if(result.error) {
         setError(result.error); 
-        setSubmitting(false); 
         return; 
       }
-      
+
       dispatch({
         type: 'setAcc',
         account: result
       }); 
 
       registerForm.reset(); 
-      setSubmitting(false); 
       setError(''); 
       navigate('/home'); 
     } catch (error) {
       setError(error.message); 
+    }  finally {
       setSubmitting(false); 
-    }  
+      registerForm.classList.remove('was-validated');
+    }
   }; 
 
   return (
-    <form id="regisForm" ref={regisFormRef} onSubmit={handleSubmit}>
-      <div className="formGroup">
+    <form id="regisForm" ref={regisFormRef} onSubmit={handleSubmit} noValidate>
+      <div className="mb-3">
         <label htmlFor="username">Username</label> <br />
-        <input id="username" className="formField" type="text" placeholder="Enter new username" name="user" required
+        <input id="username" className="form-control" type="text" placeholder="Enter new username" name="user" required
           title="Username can only include letters, numbers, and underscores" 
           pattern="[a-zA-Z0-9_]+" />  
       </div>
-      <div className="formGroup">
+      <div className="mb-3">
         <label htmlFor="pass">Password</label> <br />
-        <input id="pass" className="formField" type="text" minLength="8" pattern="[a-zA-Z0-9!@#$%^&*_]+" name="pass" required title="Password can only be letters, numbers" 
+        <input id="pass" className="form-control" type="text" minLength="8" pattern="[a-zA-Z0-9!@#$%^&*_]+" name="pass" required title="Password can only be letters, numbers" 
           placeholder="Enter new password" />  
       </div>
-      <div role="alert">{error}</div>  
-      <button type="submit" className="submitForm" 
-        disabled={submitting}>Register</button>
+      { error !== '' && 
+        <div className="alert alert-danger" role="alert">{error}</div> }  
+      <div className="d-flex justify-content-center">
+        <button type="submit" className="btn btn-secondary" 
+          disabled={submitting}>Register</button>
+      </div>
     </form>
   ); 
 }; 
@@ -124,13 +144,16 @@ const Register = () => {
 
 const LoginPage = () => (
   <>
-    <div className="container">
-      <h2>Login</h2>
-      <Login />
-    </div>
-    <div className="container">
-      <h2>Register</h2>
-      <Register />
+    <div className="d-flex flex-column justify-content-center vh-100">
+      <div className="box">
+        <h2>Login</h2>
+        <Login />
+      </div>
+      <div className="box">
+        <h2>Register</h2>
+        <Register />
+      </div>
+
     </div>
   </>
 );

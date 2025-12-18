@@ -15,7 +15,7 @@ const routes = {
   '/login':  <App path={"login"} /> , 
   '/home': <App path={"home"} />, 
   '/expense': <App path={"expense"} />,  
-  '/diary': <App path={"diary"} />
+  '/gallery': <App path={"gallery"} />
 };
 
 function updateRoute() {

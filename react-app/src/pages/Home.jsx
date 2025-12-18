@@ -1,6 +1,28 @@
 import { routes, navigate } from '../index.js'; 
-import { useRef } from 'react'; 
+import { useRef, useContext } from 'react'; 
+import { getExpense } from '../api/expenseFetch'; 
+import { getGallery } from '../api/galleryFetch'; 
+import { StateContext } from '../context/AppContext';
 import Profile from '../components/Profile';
+
+const loadExpense = async ({data, dispatch}) => {
+  const expenseData = await getExpense(data.account._id); 
+  if(expenseData.error) return; 
+
+  dispatch({
+    type: 'setExpense', 
+    expense: expenseData
+  }); 
+};
+const loadGallery = async({data, dispatch}) => {
+  const galleryData = await getGallery(data.account._id); 
+  if (galleryData.error) return; 
+
+  dispatch({
+    type: 'setGallery', 
+    gallery: galleryData
+  }); 
+}; 
 
 const Button = () => {
   const btnRef = useRef(null); 
@@ -8,7 +30,7 @@ const Button = () => {
   const handleClick = (e) => {
     e.preventDefault(); 
     if (btnRef.current) {
-      
+
     }
     console.log('Opened profile'); 
   };
@@ -18,23 +40,25 @@ const Button = () => {
   ); 
 };
 
-const List = () => {
+const List = ({data, dispatch}) => {
   const listRef = useRef(null);
   const pages = Object.keys(routes).slice(2);
-  
+
   const pageHash = { }; 
   pages.forEach(element => {
     const tmp = element.slice(1); 
     const pageTitle = tmp.toUpperCase();
-    
+
     pageHash[element] = pageTitle;
   });
 
   function onClick(e, page) {
     e.preventDefault(); 
+    if(page === '/expense') loadExpense({data: data, dispatch: dispatch}); 
+    if(page === '/gallery') loadGallery({data: data, dispatch: dispatch});
     navigate(page); 
   };
-  
+
   return (
     <div className="appsList" ref={listRef}>
       {Object.entries(pageHash).map(([page,title]) => (
@@ -48,13 +72,16 @@ const List = () => {
 
 
 // ========================== PAGE =======================================
-const HomePage = ({name}) => (
-  <>
-    <h2>{name}'s Home</h2>
-    <Button />
-    <List />
+const HomePage = () => {
+  const { data, dispatch } = useContext(StateContext); 
+  return (
+    <>
+      <h2 style={{fontStyle:'italic'}}>{data.account.user}'s SUITCASE</h2>
+      <Button />
+      <List data={data} dispatch={dispatch}/>
 
-  </>
-);
+    </>
+  ); 
+};
 
 export default HomePage; 

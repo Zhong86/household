@@ -11,7 +11,6 @@ router.post('/expense/:userId', async (req, res) => {
     balance: req.body.balance, 
     transactions: [],
   }); 
-  console.log(expense); 
   try {
     const newExpense = await expense.save(); 
     res.status(201).json(newExpense); 
@@ -25,7 +24,7 @@ router.get('/expense/:userId', async (req, res) => {
   try {
     const expense = await Expense.findOne({userId: req.params.userId}); 
     if (!expense) {
-      return res.send(-1); 
+      return res.status(404).send(null); 
     }
     res.send(expense); 
   } catch (error) {
