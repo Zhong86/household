@@ -133,7 +133,7 @@ const ListEntries = ({data}) => {
       ))}
       { chosenId !== null && 
         <FloatingContainer text={selectedEntry.title} close={() => setId(null)}> 
-
+          
         </FloatingContainer>
       }
     </>

@@ -29,7 +29,7 @@ router.post('/accounts', async (req, res) => {
 }); 
 
 //GET ONE
-router.post('/accounts/:user', getUser, async (req, res) => {
+router.post('/login', getUser, async (req, res) => {
   const pass = res.user.pass; 
   try {
     const correct = await bcrypt.compare(req.body.pass, pass);
@@ -51,7 +51,7 @@ router.patch('/accounts/:user', getUser, async (req, res) => {
     res.user.user = req.body.user;
   }
   if (req.body.pass != null) {
-    res.user.pass = req.body.pass; 
+    res.user.pass = await bcrypt.hash(req.body.pass, 12); 
   }
   try {
     const updatedUser = await res.user.save(); 
@@ -74,7 +74,7 @@ router.delete('/accounts/:user', async (req, res) => {
 //MIDDLEWARE
 async function getUser(req, res, next) {
   try {
-    user = await User.find({user: req.params.user}); 
+    user = await User.findOne({user: req.body.user || req.params.user}); 
     if (user == null) {
       return res.status(404).json({message: 'User not found'})
     }
@@ -82,7 +82,7 @@ async function getUser(req, res, next) {
     return res.status(500).json({message: error.message}); 
   }
 
-  res.user = user[0]; 
+  res.user = user; 
   next(); 
 }
 

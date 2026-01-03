@@ -1,8 +1,9 @@
 const express = require('express'); 
-const bodyParser = require('body-parser'); 
+const cors = require('cors'); 
 const mongoose = require('mongoose'); 
 require('dotenv').config(); 
 
+const api = '/api';
 const port = process.env.PORT || 5000; 
 
 //store data
@@ -23,19 +24,24 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(cors()); 
+app.use(cors({
+  origin: 'http://localhost:3000', 
+  credentials: true
+}));
+
+app.use(express.json()); 
 
 const accRouter = require('./routes/accRoute'); 
-app.use('/api', accRouter); 
+app.use(api, accRouter); 
 
 const expenseRouter = require('./routes/expenseRoute'); 
-app.use('/api', expenseRouter); 
+app.use(api, expenseRouter); 
 
 const galleryRouter = require('./routes/galleryRoute'); 
-app.use('/api', galleryRouter); 
+app.use(api, galleryRouter); 
 
 //Router
 app.listen(port, '0.0.0.0', () => {
-  console.log('Entered server'); 
+  console.log('Entered server: ' + port); 
 }); 

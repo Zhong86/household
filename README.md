@@ -4,3 +4,5 @@
 -Expense Tracker with Filter functionality <br> 
 -Gallery with Image rendering <br> 
 
+#Todo <br>
+[] JWT Auth <br>

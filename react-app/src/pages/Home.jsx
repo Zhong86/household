@@ -1,5 +1,5 @@
 import { routes, navigate } from '../index.js'; 
-import { useRef, useContext, useEffect } from 'react'; 
+import { useRef, useContext, useEffect, useMemo } from 'react'; 
 import { getExpense } from '../api/expenseFetch'; 
 import { getGallery } from '../api/galleryFetch'; 
 import { StateContext } from '../context/AppContext';
@@ -54,13 +54,15 @@ const List = ({data, dispatch}) => {
 
   function onClick(e, page) {
     e.preventDefault(); 
+    
     navigate(page); 
   };
   
   useEffect(() => {
+    console.log('Use effect triggered'); 
     loadExpense({data: data, dispatch: dispatch}); 
     loadGallery({data: data, dispatch: dispatch});
-  }, []); 
+  }, [data.account._id]); 
 
   return (
     <div className="d-flex flex-column align-items-center gap-2 vh-100" ref={listRef}>
@@ -77,12 +79,12 @@ const List = ({data, dispatch}) => {
 // ========================== PAGE =======================================
 const HomePage = () => {
   const { data, dispatch } = useContext(StateContext); 
+
   return (
     <>
       <h2 className="header" style={{fontStyle:'italic'}}>{data.account.user}'s SUITCASE</h2>
       <Button />
       <List data={data} dispatch={dispatch}/>
-
     </>
   ); 
 };

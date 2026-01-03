@@ -20,9 +20,9 @@ export async function createAcc(acc) {
 }
 
 export async function getAcc(acc) {
-  const url = process.env.REACT_APP_SERVER_PORT + '/accounts/'; 
+  const url = process.env.REACT_APP_SERVER_PORT + '/login'; 
   try {
-    const response = await fetch(url + encodeURIComponent(acc.user), 
+    const response = await fetch(url, 
       {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
