@@ -1,5 +1,5 @@
 import { routes, navigate } from '../index.js'; 
-import { useRef, useContext } from 'react'; 
+import { useRef, useContext, useEffect } from 'react'; 
 import { getExpense } from '../api/expenseFetch'; 
 import { getGallery } from '../api/galleryFetch'; 
 import { StateContext } from '../context/AppContext';
@@ -54,13 +54,16 @@ const List = ({data, dispatch}) => {
 
   function onClick(e, page) {
     e.preventDefault(); 
-    if(page === '/expense') loadExpense({data: data, dispatch: dispatch}); 
-    if(page === '/gallery') loadGallery({data: data, dispatch: dispatch});
     navigate(page); 
   };
+  
+  useEffect(() => {
+    loadExpense({data: data, dispatch: dispatch}); 
+    loadGallery({data: data, dispatch: dispatch});
+  }, []); 
 
   return (
-    <div className="appsList" ref={listRef}>
+    <div className="d-flex flex-column align-items-center gap-2 vh-100" ref={listRef}>
       {Object.entries(pageHash).map(([page,title]) => (
         <button key={page} className="appChildrenBtn" onClick={(e) => onClick(e,page)}>{title}</button>
       ))}
@@ -76,7 +79,7 @@ const HomePage = () => {
   const { data, dispatch } = useContext(StateContext); 
   return (
     <>
-      <h2 style={{fontStyle:'italic'}}>{data.account.user}'s SUITCASE</h2>
+      <h2 className="header" style={{fontStyle:'italic'}}>{data.account.user}'s SUITCASE</h2>
       <Button />
       <List data={data} dispatch={dispatch}/>
 

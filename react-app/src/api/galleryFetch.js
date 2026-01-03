@@ -35,15 +35,11 @@ export async function getGallery(userId) {
 }
 
 export async function createEntry(userId, entry) {
-  const url = `${process.env.REACT_APP_SERVER_PORT}/gallery/${userId}/entry`;
+  const url = `${process.env.REACT_APP_SERVER_PORT}/gallery/${userId}/entries`;
   try {
     const response = await fetch(url, {
       method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json'
-      }, 
-      body: JSON.stringify(entry)
+      body: entry
     }); 
     if (!response.ok) {
       const errorData = await response.json();

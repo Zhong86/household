@@ -1,30 +1,21 @@
 const tableStyle = {
-  width: "550px", 
+  width: "600px", 
   margin:"auto",
   marginTop: "20px", 
-  borderCollapse: "collapse", 
-  backgroundColor: "white",
 };
 
 const theadStyle = {
   textAlign: "left", 
   padding: "4px", 
-  border: "1px solid",
 }; 
 
 const dltStyle = {
   textAlign: 'center', 
-  backgroundColor: 'rgba(0,0,0,0)', 
 }; 
 
 const TData = ({keyTmp, value, index }) =>  {
   return (
-    <td key={keyTmp}
-      style={{
-        ...theadStyle,
-        textAlign: keyTmp === "location" ? "center" : "left",
-        backgroundColor: index % 2 === 0 ? "#eeeeee" : "grey",
-      }}>
+    <td key={keyTmp}>
       {keyTmp === "price" ? value.toFixed(2) : value}
     </td>
   ); 
@@ -32,11 +23,12 @@ const TData = ({keyTmp, value, index }) =>  {
 
 const Table = ({headers, list, onDelete}) => {
   const thead = headers.map(h => h.charAt(0).toUpperCase() + h.slice(1));
+  thead.push('Delete'); 
 
   return (
-    <table style={tableStyle}>
+    <table className="table table-striped table-bordered table-hover" style={tableStyle}>
       <thead style={theadStyle}>
-        <tr>{thead.map((head, i) => <th key={`${i}-${head}`}>{head}</th>)}</tr>
+        <tr>{thead.map((head, i) => <th scope='col' key={`${i}-${head}`}>{head}</th>)}</tr>
       </thead>
       <tbody>
         {list && list.map((child, i) => {
@@ -49,7 +41,7 @@ const Table = ({headers, list, onDelete}) => {
               ))}
               {onDelete && 
                 (<td key={`${id}-dlt`} style={dltStyle}>
-                <button onClick={(e) => onDelete(e,id)}>Delete</button>
+                <button className='btn btn-danger' onClick={(e) => onDelete(e,id)}>Delete</button>
               </td>)}
             </tr>
           );

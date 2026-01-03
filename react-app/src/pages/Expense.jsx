@@ -25,11 +25,13 @@ const MainPage = ({ data, dispatch}) => {
         <span>{data.expense.currency}</span> <span>{data.expense.balance}</span>
       </section>
       <h2 style={{
-        marginTop: '.5%', marginBottom: '2%'
+        marginTop: '.5%', marginBottom: '2%', textAlign: 'center'
       }}>{data.expense.description}</h2>
       <FloatingButton text="Add Transaction" onClick={() => setCreating(true)} /> 
       { isCreating && <TransactionBloc data={data} dispatch={dispatch} close={() => setCreating(false)}/> }
-      <Filter setFilter={setFilter}/>
+      <div style={{width: "80%", maxWidth: '600px', margin:'0 auto'}}>
+        <Filter setFilter={setFilter}/>
+      </div>
       <TransactionTable filters={filter} data={data} dispatch={dispatch}/>
     </>
   ); 
@@ -151,16 +153,16 @@ const TransactionBloc = ({ data, dispatch, close }) => {
           <label htmlFor="price">Price</label> <br/>
           <input className="form-control" type="number" name="price" step="0.01" id="price"required />
         </div>
-        <div className="mb-2">
+        <div className="mb-3">
           <label htmlFor="location">Location (Optional)</label> <br />
           <input className="form-control" type="text" name="location" maxLength="100" id="location"/>
         </div>
-        { error !== '' &&
-          <div className="alert alert-danger" role="alert">{error}</div> }
         <div className="d-flex justify-content-center">
           <button type="submit" disabled={submitting} className="btn btn-secondary"
           >Create</button>
         </div>
+        { error !== '' &&
+          <div className="alert alert-danger" role="alert">{error}</div> }
       </form>
     </FloatingContainer>
   ); 
@@ -214,11 +216,9 @@ const Filter = ({setFilter}) => {
           <label htmlFor="search-description">Description</label>
           <input type="text" id="search-description" name="searchDescription" className="form-control"/>
         </div>
-        <div className="col">
-          <div className="row">
-            <button type="submit">Search</button>
-            <button onClick={reset}>Clear Filters</button>
-          </div>
+        <div className="col d-flex align-items-end gap-2">
+          <button type="submit" className='btn flex-fill btn-primary'>Search</button>
+          <button onClick={reset} className='btn flex-fill btn-secondary'>Clear Filters</button>
         </div>
       </div>
     </form>
@@ -276,13 +276,13 @@ const NewUser = () => {
 
   return (
     <>
-      <h1>Welcome To Your Expense Page</h1>
+      <h1 style={{textAlign: 'center', marginBottom: '5%'}}>Welcome To Your Expense Page</h1>
       <div className="box">
-        <h2>Create Your Expense Data</h2>
+        <h2 style={{textAlign: 'center'}}>Create Your Expense Data</h2>
         <form ref={formRef} onSubmit={submitExpense} noValidate>
           <div className="mb-3">
             <label htmlFor="currency">Currency</label> 
-            <input type="text" id="currency" name="currency" className="form-control" pattern="(Rp||$)" required/> <br />
+            <input type="text" id="currency" name="currency" className="form-control" pattern="(Rp||$)" placeholder='Rp, $' required/> <br />
           </div>
           <div className="mb-3">
             <label htmlFor="desc" >Description </label> 
@@ -295,7 +295,7 @@ const NewUser = () => {
           { error !== '' && 
             <div className="alert alert-danger" role="alert">{error}</div> }
           <div className="d-flex justify-content-center">
-            <button type="submit" disabled={submitting}>Enter Expense Page</button>
+            <button type="submit" disabled={submitting} className='btn btn-primary'>Enter Expense Page</button>
           </div>
         </form>
       </div>

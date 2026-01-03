@@ -1,5 +1,7 @@
 const express = require('express'); 
 const router = express.Router(); 
+const multer = require('multer'); 
+const upload = multer({ dest: 'uploads/' }); 
 const Gallery = require('../models/Gallery'); 
 
 //CREATE
@@ -31,18 +33,19 @@ router.get('/gallery/:userId', async (req, res) => {
 //============================== ENTRIES ===================================
 
 //CREATE
-router.post('/gallery/:userId/entries/:id', (req, res) => {
+router.post('/gallery/:userId/entries/', upload.single('img'), async (req, res) => {
   const newEntry = {
     title: req.body.title, 
-    // img: something, 
-    story: req.body.story
+    img: `/${req.file.path}`, 
+    story: req.body.story, 
+    dateUpdated: new Date(), 
   }; 
+
   if(req.body.dateCreated) 
     newEntry.dateCreated = req.body.dateCreated; 
 
-  newEntry.dateUpdated = req.body.dateCreated; 
   try {
-    const updatedGallery = Gallery.findOneAndUpdate(
+    const updatedGallery = await Gallery.findOneAndUpdate(
       {userId: req.params.userId}, 
       {
         $push: { entries: newEntry}

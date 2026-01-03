@@ -16,7 +16,8 @@
     "body-parser": "^2.2.1",
     "crypto": "^1.0.1",
     "express": "^5.1.0",
-    "mongoose": "^9.0.1"
+    "mongoose": "^9.0.1",
+    "multer": "^2.0.2"
   },
   "devDependencies": {
     "dotenv": "^17.2.3",

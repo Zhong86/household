@@ -146,11 +146,11 @@ const LoginPage = () => (
   <>
     <div className="d-flex flex-column justify-content-center vh-100">
       <div className="box">
-        <h2>Login</h2>
+        <h2 style={{textAlign: 'center'}}>Login</h2>
         <Login />
       </div>
       <div className="box">
-        <h2>Register</h2>
+        <h2 style={{textAlign: 'center'}}>Register</h2>
         <Register />
       </div>
 

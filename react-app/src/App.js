@@ -1,5 +1,5 @@
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 import Acc from './pages/Acc';
 import Home from './pages/Home';
 import Expense from './pages/Expense'; 
@@ -12,7 +12,7 @@ export default function App({path}) {
 
   return (
     <StateContext value={{data, dispatch}}>
-      <div className="App">
+      <div className="App ">
         {getPage(path)}
       </div>
     </StateContext>

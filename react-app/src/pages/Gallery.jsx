@@ -20,15 +20,22 @@ const MainPage = ({data, dispatch}) => {
 
   return (
     <>
-      <h1>{`${data.account.user}'s ${data.gallery.description}`}</h1>
+      <h1 style={{textAlign: 'center'}}>{`${data.account.user}'s ${data.gallery.description}`}</h1>
       <FloatingButton text="Create Entry" onClick={() => setCreating(true)}/>
       { creating &&  <EntryBloc data={data} dispatch={dispatch} close={()=>setCreating(false)}/>}
-      <div className="split">
-        <Sort options={sortOptions}/>
-        <Toggle 
-          option1="List" option2="Grid"
-          onClick1={()=>setList(true)} onClick2={()=>setList(false)}
-        />
+      <div className="row justify-content-center mt-4 gap-5">
+        <div className="col-4 ">
+          <Sort options={sortOptions}/>
+        </div>
+        <div className='col-3 '>
+          <Toggle active={listForm}
+            option1="List" option2="Grid"
+            onClick1={()=>setList(true)} onClick2={()=>setList(false)}
+          />
+        </div>
+      </div>
+      <div className='row justify-content-center gy-2'>
+        <ListEntries data={data}/>
       </div>
     </>
   ); 
@@ -42,52 +49,59 @@ const EntryBloc = ({data, dispatch, close}) => {
   const onCreateEntry = async (e) => {
     e.preventDefault(); 
     if (!formRef.current) return; 
-
     const form = formRef.current; 
+
+    if (!form.checkValidity()) {
+      form.classList.add('was-validated'); 
+      return; 
+    }
+
     setSubmitting(true); 
     try {
       const formData = new FormData(form); 
-      const value = Object.fromEntries(formData); 
-
-      const result = await createEntry(data.gallery.userId, value); 
+      
+      const result = await createEntry(data.gallery.userId, formData); 
       if (result.error) {
         setError(result.error); 
-        setSubmitting(false); 
         return; 
       }
-      
+
       dispatch({
         type: 'setGallery', 
         gallery: result
       }); 
 
       form.reset(); 
-      setSubmitting(false); 
       setError(''); 
       close(); 
     } catch (error) {
       setError(error.message); 
+    } finally {
       setSubmitting(false); 
+      form.classList.remove('was-validated'); 
     }
   }; 
 
   return (
     <FloatingContainer text='Create New Entry' close={close}>
-      <form ref={formRef} onSubmit={onCreateEntry} method="POST">
-        <div className="formGroup">
-          <label forHtml="title">Title</label> <br />
-          <input id="title" name="title" type="text" required />
+      <form ref={formRef} onSubmit={onCreateEntry} method="POST" noValidate>
+        <div className="mb-2">
+          <label htmlFor="title">Title</label> <br />
+          <input id="title" name="title" type="text" className='form-control' required />
         </div>
-        <div className="formGroup">
+        <div className="mb-2">
           <label forHtml="img">Image</label> <br />
-          <input id="img" name="img" type="file" required />
+          <input id="img" name="img" type="file" className='form-control' required />
         </div>
-        <div className="formGroup">
+        <div className="mb-4">
           <label forHtml="story">Story</label> <br />
-          <input id="story" name="story" type="text" required />
+          <textarea id="story" name="story" row="3" className='form-control' required />
         </div>
-        <div role='alert'>{error}</div>
-        <button type="submit" classForm="submitForm">Create Entry</button>
+        <div className='d-flex justify-content-center'>
+          <button type="submit" className="btn btn-primary btn-lg">Create Entry</button>
+        </div>
+        { error !== '' &&
+          <div className='alert alert-danger' role='alert'>{error}</div> }
       </form>
     </FloatingContainer>
   );
@@ -95,22 +109,37 @@ const EntryBloc = ({data, dispatch, close}) => {
 
 const ListEntries = ({data}) => {
   const [grid, setGrid] = useState(false); 
+  const [chosenId, setId] = useState(null); 
   const entries = data.gallery.entries; 
 
-  const openEntry = async (e) => {
+  const openEntry = async (e, id) => {
     e.preventDefault(); 
+    setId(id); 
   }; 
+  
+  const selectedEntry = chosenId !== null
+    ? entries.find(entry => entry._id === chosenId)
+    : null; 
+  console.log(selectedEntry); 
 
   return (
     <>
       { entries && entries.map(entry => (
-        <button key={entry}  onClick={(e) => openEntry(e, entry.id)}>
-          {entry.title}
-        </button>
+        <div key={entry._id} className='col-8'>
+          <button key={entry._id} className='btn btn-secondary w-100' onClick={(e) => openEntry(e, entry._id)}>
+            {entry.title}
+          </button>
+        </div>
       ))}
+      { chosenId !== null && 
+        <FloatingContainer text={selectedEntry.title} close={() => setId(null)}> 
+
+        </FloatingContainer>
+      }
     </>
   ); 
 }; 
+
 const NewUser = () => {
   const { data, dispatch } = useContext(StateContext); 
   const [error, setError] = useState(''); 

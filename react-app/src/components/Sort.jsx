@@ -1,10 +1,10 @@
 const Sort = ({options}) => {
   return (
-    <div style={{width:"30%"}}>
-      <label htmlFor="sort" style={{color:"white"}}>Sort</label> <br />
-      <select name="sort" id="sort">
-        {options.map(([value, text]) => (
-          <option key={value} value={value}>{text}</option>
+    <div className='mb-3'>
+      <select className="form-select" >
+        <option selected>Sort Options</option>
+        {options.map(option => (
+          <option key={option} value={option}>{option}</option>
         ))}
       </select>
     </div>

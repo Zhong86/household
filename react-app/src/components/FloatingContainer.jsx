@@ -1,5 +1,5 @@
 const closeBtnStyle = {
-  position: "relative", 
+  position: "absolute", 
   width: "30px", 
   height: "30px", 
   background: "none",
@@ -25,7 +25,7 @@ const FloatingContainer = ({ close, text, children}) => {
   return (
     <div className="floatingContainer">
       <button style={closeBtnStyle} onClick={close} type="button" >X</button>
-      <h2  style={{fontSize:"30px"}}>{text}</h2>
+      <h2  style={{marginTop: '16px', fontSize:"30px", textAlign:'center'}}>{text}</h2>
       <div style={innerBodyStyle}>
         {children}
       </div>

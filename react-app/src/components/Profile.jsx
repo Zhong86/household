@@ -1,7 +1,7 @@
 const profileStyle = {
   position:"absolute", 
-  top: "10%", 
-  right: "10%",
+  top: "32px", 
+  right: "32px",
 };
 
 const btnStyle = {
